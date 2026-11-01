@@ -1,0 +1,7 @@
+{
+  "name": "ssf2t-editor-ui-tests",
+  "private": true,
+  "description": "jsdom tests for static/index.html (stubbed API). Run: npm install && npm test",
+  "scripts": { "test": "node dropdowns.test.js" },
+  "devDependencies": { "jsdom": "24.1.0" }
+}

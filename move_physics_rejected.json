@@ -1,0 +1,1358 @@
+[
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Medium Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x09B0DC",
+  "space": "raw",
+  "setter": "0x09AFAC",
+  "ins": "move.w (a1, d0.w), $3c(a6)",
+  "orig": -1280,
+  "written": -1280
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Medium Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x09B0DE",
+  "space": "raw",
+  "setter": "0x09AFB2",
+  "ins": "move.w $2(a1, d0.w), $40(a6)",
+  "orig": -48,
+  "written": -48
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Medium Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x09B0E0",
+  "space": "raw",
+  "setter": "0x09AFB8",
+  "ins": "move.w $4(a1, d0.w), $3e(a6)",
+  "orig": 768,
+  "written": 768
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Medium Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x09B0E2",
+  "space": "raw",
+  "setter": "0x09AFBE",
+  "ins": "move.w $6(a1, d0.w), $42(a6)",
+  "orig": 112,
+  "written": 112
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Strong Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x09B0DC",
+  "space": "raw",
+  "setter": "0x09AFAC",
+  "ins": "move.w (a1, d0.w), $3c(a6)",
+  "orig": -1280,
+  "written": -1280
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Strong Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x09B0DE",
+  "space": "raw",
+  "setter": "0x09AFB2",
+  "ins": "move.w $2(a1, d0.w), $40(a6)",
+  "orig": -48,
+  "written": -48
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Strong Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x09B0E0",
+  "space": "raw",
+  "setter": "0x09AFB8",
+  "ins": "move.w $4(a1, d0.w), $3e(a6)",
+  "orig": 768,
+  "written": 768
+ },
+ {
+  "char": "blanka_old",
+  "move": "Backstep Roll",
+  "strength": "Strong Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x09B0E2",
+  "space": "raw",
+  "setter": "0x09AFBE",
+  "ins": "move.w $6(a1, d0.w), $42(a6)",
+  "orig": 112,
+  "written": 112
+ },
+ {
+  "char": "boxer_old",
+  "move": "Dash Upper",
+  "strength": "Medium Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x0A2714",
+  "space": "op",
+  "setter": "0x0A26B8",
+  "ins": "move.w $a2714(pc, d0.w), $3c(a6)",
+  "orig": 2048,
+  "written": 2048
+ },
+ {
+  "char": "boxer_old",
+  "move": "Dash Upper",
+  "strength": "Medium Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A2784",
+  "space": "op",
+  "setter": "0x0A2772",
+  "ins": "move.w $a2784(pc, d0.w), $40(a6)",
+  "orig": 160,
+  "written": 160
+ },
+ {
+  "char": "boxer_old",
+  "move": "Dash Upper",
+  "strength": "Strong Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x0A2714",
+  "space": "op",
+  "setter": "0x0A26B8",
+  "ins": "move.w $a2714(pc, d0.w), $3c(a6)",
+  "orig": 2048,
+  "written": 2048
+ },
+ {
+  "char": "boxer_old",
+  "move": "Dash Upper",
+  "strength": "Strong Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A2784",
+  "space": "op",
+  "setter": "0x0A2772",
+  "ins": "move.w $a2784(pc, d0.w), $40(a6)",
+  "orig": 160,
+  "written": 160
+ },
+ {
+  "char": "cammy_old",
+  "move": "Cannon Spike",
+  "strength": "Medium Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A4DA0",
+  "space": "op",
+  "setter": "0x0A4D82",
+  "ins": "move.w $a4d9c(pc, d0.w), $40(a6)",
+  "orig": 48,
+  "written": 48
+ },
+ {
+  "char": "cammy_old",
+  "move": "Cannon Spike",
+  "strength": "Medium Kick",
+  "key": "speed2",
+  "label": "speed (phase 2)",
+  "addr": "0x0A4E08",
+  "space": "op",
+  "setter": "0x0A4DF6",
+  "ins": "move.w $a4e08(pc, d0.w), $3c(a6)",
+  "shared_with": [
+   "cammy_old Spin Drive Smasher (super)"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "cammy_old",
+  "move": "Cannon Spike",
+  "strength": "Strong Kick",
+  "key": "rise_slow2",
+  "label": "rise slowdown (phase 2)",
+  "addr": "0x0A4DA4",
+  "space": "op",
+  "setter": "0x0A4D90",
+  "ins": "move.w $a4da4(pc, d0.w), $42(a6)",
+  "shared_with": [
+   "cammy_old Spin Drive Smasher (super)"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "cammy_old",
+  "move": "Cannon Spike",
+  "strength": "Strong Kick",
+  "key": "speed2",
+  "label": "speed (phase 2)",
+  "addr": "0x0A4E08",
+  "space": "op",
+  "setter": "0x0A4DF6",
+  "ins": "move.w $a4e08(pc, d0.w), $3c(a6)",
+  "shared_with": [
+   "cammy_old Spin Drive Smasher (super)"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "cammy_old",
+  "move": "Spin Drive Smasher (super)",
+  "strength": "Strong Kick",
+  "key": "rise_slow2",
+  "label": "rise slowdown (phase 2)",
+  "addr": "0x0A4DA4",
+  "space": "op",
+  "setter": "0x0A4D90",
+  "ins": "move.w $a4da4(pc, d0.w), $42(a6)",
+  "shared_with": [
+   "cammy_old Cannon Spike"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "cammy_old",
+  "move": "Spin Drive Smasher (super)",
+  "strength": "Strong Kick",
+  "key": "speed2",
+  "label": "speed (phase 2)",
+  "addr": "0x0A4E08",
+  "space": "op",
+  "setter": "0x0A4DF6",
+  "ins": "move.w $a4e08(pc, d0.w), $3c(a6)",
+  "shared_with": [
+   "cammy_old Cannon Spike"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "deejay_old",
+  "move": "Double Rolling Sobat",
+  "strength": "Strong Kick",
+  "key": "speed2",
+  "label": "speed (phase 2)",
+  "addr": "0x0A7AC2",
+  "space": "raw",
+  "setter": "0x0A7B98",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "deejay_old Sobat Carnival (super)"
+  ],
+  "orig": 1024,
+  "written": 1024
+ },
+ {
+  "char": "deejay_old",
+  "move": "Double Rolling Sobat",
+  "strength": "Strong Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A7AC4",
+  "space": "raw",
+  "setter": "0x0A7B9E",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "deejay_old Sobat Carnival (super)"
+  ],
+  "orig": 16,
+  "written": 16
+ },
+ {
+  "char": "deejay_old",
+  "move": "Double Rolling Sobat",
+  "strength": "Strong Kick",
+  "key": "rise2",
+  "label": "rise speed (phase 2)",
+  "addr": "0x0A7AC6",
+  "space": "raw",
+  "setter": "0x0A7BA4",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "deejay_old Sobat Carnival (super)"
+  ],
+  "orig": 768,
+  "written": 768
+ },
+ {
+  "char": "deejay_old",
+  "move": "Double Rolling Sobat",
+  "strength": "Strong Kick",
+  "key": "rise_slow2",
+  "label": "rise slowdown (phase 2)",
+  "addr": "0x0A7AC8",
+  "space": "raw",
+  "setter": "0x0A7BAA",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "deejay_old Sobat Carnival (super)"
+  ],
+  "orig": 160,
+  "written": 160
+ },
+ {
+  "char": "deejay_old",
+  "move": "Sobat Carnival (super)",
+  "strength": "Strong Kick",
+  "key": "speed2",
+  "label": "speed (phase 2)",
+  "addr": "0x0A7AC2",
+  "space": "raw",
+  "setter": "0x0A7B98",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "deejay_old Double Rolling Sobat"
+  ],
+  "orig": 1024,
+  "written": 1024
+ },
+ {
+  "char": "deejay_old",
+  "move": "Sobat Carnival (super)",
+  "strength": "Strong Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A7AC4",
+  "space": "raw",
+  "setter": "0x0A7B9E",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "deejay_old Double Rolling Sobat"
+  ],
+  "orig": 16,
+  "written": 16
+ },
+ {
+  "char": "deejay_old",
+  "move": "Sobat Carnival (super)",
+  "strength": "Strong Kick",
+  "key": "rise2",
+  "label": "rise speed (phase 2)",
+  "addr": "0x0A7AC6",
+  "space": "raw",
+  "setter": "0x0A7BA4",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "deejay_old Double Rolling Sobat"
+  ],
+  "orig": 768,
+  "written": 768
+ },
+ {
+  "char": "deejay_old",
+  "move": "Sobat Carnival (super)",
+  "strength": "Strong Kick",
+  "key": "rise_slow2",
+  "label": "rise slowdown (phase 2)",
+  "addr": "0x0A7AC8",
+  "space": "raw",
+  "setter": "0x0A7BAA",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "deejay_old Double Rolling Sobat"
+  ],
+  "orig": 160,
+  "written": 160
+ },
+ {
+  "char": "dictator_old",
+  "move": "Head Stomp",
+  "strength": "Medium Kick",
+  "key": "speed3",
+  "label": "speed (phase 3)",
+  "addr": "0x0A0D42",
+  "space": "op",
+  "setter": "0x0A0D46",
+  "ins": "move.w #$900, $3c(a6)",
+  "orig": 2304,
+  "written": null
+ },
+ {
+  "char": "dictator_old",
+  "move": "Head Stomp",
+  "strength": "Medium Kick",
+  "key": "slowdown2",
+  "label": "slowdown (phase 2)",
+  "addr": "0x0A0D48",
+  "space": "op",
+  "setter": "0x0A0D4C",
+  "ins": "move.w #$50, $40(a6)",
+  "orig": 80,
+  "written": null
+ },
+ {
+  "char": "dictator_old",
+  "move": "Head Stomp",
+  "strength": "Medium Kick",
+  "key": "rise3",
+  "label": "rise speed (phase 3)",
+  "addr": "0x0A0D4E",
+  "space": "op",
+  "setter": "0x0A0D52",
+  "ins": "move.w #$800, $3e(a6)",
+  "orig": 2048,
+  "written": null
+ },
+ {
+  "char": "dictator_old",
+  "move": "Head Stomp",
+  "strength": "Medium Kick",
+  "key": "rise_slow6",
+  "label": "rise slowdown (phase 6)",
+  "addr": "0x0A0D54",
+  "space": "op",
+  "setter": "0x0A0D58",
+  "ins": "move.w #$80, $42(a6)",
+  "orig": 128,
+  "written": null
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ken_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Weak Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Medium Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x07B4F2",
+  "space": "raw",
+  "setter": "0x07B4CA",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": -896,
+  "written": -896
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "ryu_old",
+  "move": "Air Tatsumaki",
+  "strength": "Strong Kick",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x07B4F8",
+  "space": "raw",
+  "setter": "0x07B4DC",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki"
+  ],
+  "orig": 80,
+  "written": 80
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shinku Hadouken (super)",
+  "strength": "Strong Punch",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x099112",
+  "space": "raw",
+  "setter": "0x0990D4",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shoryuken"
+  ],
+  "orig": 2048,
+  "written": 2048
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shinku Hadouken (super)",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x099114",
+  "space": "raw",
+  "setter": "0x0990DA",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shoryuken"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shinku Hadouken (super)",
+  "strength": "Strong Punch",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x099118",
+  "space": "raw",
+  "setter": "0x0990E6",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shoryuken"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Weak Punch",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x09910A",
+  "space": "raw",
+  "setter": "0x0990D4",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 1024,
+  "written": 1024
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Weak Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x09910C",
+  "space": "raw",
+  "setter": "0x0990DA",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Weak Punch",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x09910E",
+  "space": "raw",
+  "setter": "0x0990E0",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 1280,
+  "written": 1280
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Weak Punch",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x099110",
+  "space": "raw",
+  "setter": "0x0990E6",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Medium Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x09910C",
+  "space": "raw",
+  "setter": "0x0990DA",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Medium Punch",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x099110",
+  "space": "raw",
+  "setter": "0x0990E6",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Shoryuken"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Strong Punch",
+  "key": "speed",
+  "label": "speed",
+  "addr": "0x099112",
+  "space": "raw",
+  "setter": "0x0990D4",
+  "ins": "move.w (a0, d0.w), $3c(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shinku Hadouken (super)"
+  ],
+  "orig": 2048,
+  "written": 2048
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x099114",
+  "space": "raw",
+  "setter": "0x0990DA",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shinku Hadouken (super)"
+  ],
+  "orig": 128,
+  "written": 128
+ },
+ {
+  "char": "ryu_old",
+  "move": "Shoryuken",
+  "strength": "Strong Punch",
+  "key": "rise_slow",
+  "label": "rise slowdown",
+  "addr": "0x099118",
+  "space": "raw",
+  "setter": "0x0990E6",
+  "ins": "move.w $6(a0, d0.w), $42(a6)",
+  "shared_with": [
+   "ken_old Shoryuken",
+   "ryu_old Shinku Hadouken (super)"
+  ],
+  "orig": 96,
+  "written": 96
+ },
+ {
+  "char": "thawk_old",
+  "move": "Condor Dive",
+  "strength": "3 Punches",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4F4",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki"
+  ],
+  "orig": -5,
+  "written": -5
+ },
+ {
+  "char": "thawk_old",
+  "move": "Condor Dive",
+  "strength": "3 Punches",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki",
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "thawk_old",
+  "move": "Double Typhoon (super)",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "thawk_old",
+  "move": "Double Typhoon (super)",
+  "strength": "Strong Punch",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Mexican Typhoon"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Weak Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Weak Punch",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Medium Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Medium Punch",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "thawk_old",
+  "move": "Mexican Typhoon",
+  "strength": "Strong Punch",
+  "key": "rise",
+  "label": "rise speed",
+  "addr": "0x07B4F6",
+  "space": "raw",
+  "setter": "0x07B4D6",
+  "ins": "move.w $4(a0, d0.w), $3e(a6)",
+  "shared_with": [
+   "ken_old Air Tatsumaki",
+   "ryu_old Air Tatsumaki",
+   "thawk_old Condor Dive",
+   "thawk_old Double Typhoon (super)"
+  ],
+  "orig": 1792,
+  "written": 1792
+ },
+ {
+  "char": "zangief_old",
+  "move": "Final Atomic Buster (super)",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Running Bear Grab",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Running Bear Grab",
+  "strength": "Weak Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Running Bear Grab",
+  "strength": "Medium Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Running Bear Grab",
+  "strength": "Strong Kick",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Spinning Piledriver"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Spinning Piledriver",
+  "strength": "Weak Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Spinning Piledriver",
+  "strength": "Medium Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab"
+  ],
+  "orig": 5,
+  "written": 5
+ },
+ {
+  "char": "zangief_old",
+  "move": "Spinning Piledriver",
+  "strength": "Strong Punch",
+  "key": "slowdown",
+  "label": "slowdown",
+  "addr": "0x07B4FC",
+  "space": "raw",
+  "setter": "0x07B4D0",
+  "ins": "move.w $2(a0, d0.w), $40(a6)",
+  "shared_with": [
+   "thawk_old Double Typhoon (super)",
+   "thawk_old Mexican Typhoon",
+   "zangief_old Final Atomic Buster (super)",
+   "zangief_old Running Bear Grab"
+  ],
+  "orig": 5,
+  "written": 5
+ }
+]

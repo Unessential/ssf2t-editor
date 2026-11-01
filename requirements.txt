@@ -1,0 +1,7 @@
+# Editor (python -m uvicorn app:app). Versions the editor was developed and tested with.
+fastapi==0.142.2
+uvicorn==0.40.0
+numpy==2.4.6
+capstone==5.0.7
+# self-test, verify_*.py and build_*.py tools (FastAPI TestClient)
+httpx==0.28.1

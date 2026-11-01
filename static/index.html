@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SSF2T Editor</title>
+<style>
+  :root{--bg:#1b1d23;--panel:#262a33;--ink:#e8eaed;--muted:#9aa0ab;--line:#3a3f4b;--accent:#5ad18b;
+        /* pof/Dammit SSF2X hitbox convention (pof-ssf2x-training2020.lua) */
+        --vuln:#0000ff;--attack:#ff0000;--push:#00ff00;--throw:#ffff00;
+        --proj-vuln:#00ffff;--proj-attack:#ff6600;--weak:#ff00ff;--throwable:#f0f0f0;--axis:#7f7f7f;
+        --sel:#ffffff;
+        --edit:#ff9f1a;}            /* edit-mode colour: button, canvas border, banner */
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif;}
+  header{padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  header h1{font-size:15px;margin:0;font-weight:600;}
+  .pill{font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--line);color:var(--muted);}
+  main{display:flex;gap:16px;padding:16px;align-items:flex-start;flex-wrap:wrap;}
+  .side{width:360px;display:flex;flex-direction:column;gap:12px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;}
+  .card h2{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 8px;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);}
+  tr.sel{background:rgba(255,159,26,.18);}
+  tr.box{cursor:pointer;}
+  .fields{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;}
+  input[type=number],select{background:#1b1d23;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 6px;}
+  input[type=number]{width:100%;}
+  input:disabled{opacity:.5;}
+  button{background:#30353f;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:7px 10px;cursor:pointer;font-size:13px;}
+  button:hover{border-color:var(--accent);}
+  button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--edit);outline-offset:1px;}
+  button.primary{background:var(--accent);color:#10231a;border-color:var(--accent);font-weight:600;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .row + .row{margin-top:8px;}
+  .row label.lbl{width:92px;color:var(--muted);font-size:12px;}
+  .row select{flex:1;min-width:0;}
+  .legend span{display:inline-flex;align-items:center;gap:5px;margin-right:12px;font-size:12px;color:var(--muted);}
+  .sw{width:11px;height:11px;border-radius:2px;display:inline-block;}
+  .muted{color:var(--muted);font-size:12px;}
+  code{background:#1b1d23;padding:1px 4px;border-radius:3px;}
+  /* edit mode: an unmistakable orange button + canvas border + on-canvas banner */
+  button.danger{background:#a8322d;border-color:#d9534f;color:#fff;font-weight:600;}
+  button.danger:hover{border-color:#ffb3b0;}
+  #editBtn{width:100%;font-weight:700;padding:10px;}
+  #editBtn.on{background:var(--edit);border-color:var(--edit);color:#1b1d23;}
+  #astage{background:var(--panel);border:3px solid var(--line);border-radius:8px;display:block;}
+  #astage.editing{border-color:var(--edit);}
+  .sub{margin-left:100px;}
+  /* animation controls dock over the bottom of the viewer */
+  /* The dock hangs from the viewer's bottom edge: only its 24px handle overlaps
+     the canvas; when open, the controls drop DOWN below the viewer (over the
+     caption), so they never cover the sprite. */
+  #stageWrap{position:relative;display:inline-block;border-radius:8px;}
+  #animDock{position:absolute;left:3px;right:3px;top:calc(100% - 27px);z-index:5;
+    background:rgba(38,42,51,.97);color:var(--ink);border-top:1px solid var(--line);
+    border-radius:0 0 6px 6px;}
+  #dockBody{max-height:0;overflow:hidden;transition:max-height .15s ease;}
+  #animDock.open{box-shadow:0 8px 18px rgba(0,0,0,.45);border:1px solid var(--line);}
+  #animDock.open #dockBody{max-height:520px;}
+  #dockHandle{display:block;width:100%;height:24px;padding:0 10px;border:0;border-radius:0;
+    background:transparent;color:var(--muted);font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+  #dockHandle:hover{color:var(--ink);}
+  #animDock.open #dockHandle{color:var(--ink);}
+  #animDock.pinned #dockHandle::after{content:" · pinned";color:var(--edit);}
+  #animDock.open #dockBody{padding:2px 10px 10px;}
+  .dockgrid{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:6px 8px;align-items:center;}
+  .dockgrid label{color:var(--muted);font-size:12px;}
+  .dockgrid select{min-width:0;width:100%;}
+  @media (prefers-reduced-motion: reduce){ #dockBody{transition:none;} }
+  [hidden]{display:none !important;}
+  .physgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 10px;}
+  .physcell{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+  .physcell label{font-size:11px;}
+  .physcell input{width:72px;}
+  .inptab{width:100%;border-collapse:collapse;font-size:12px;}
+  .inptab td{padding:2px 4px;vertical-align:middle;}
+  .inptab input{width:92px;}
+  .inptab .arrows{letter-spacing:1px;white-space:nowrap;}
+  .inptab button{padding:1px 6px;}
+  .inptab td.inpextra{padding:0 4px 6px 52px;}
+  .inptab td.inpextra label{margin-right:10px;white-space:nowrap;}
+  .inptab td.inpextra input{width:56px;}
+  /* Animation view: viewer column on the left (sticky, so it stays in sight while
+     scrolling), cards flowing into as many balanced columns as fit beside it. */
+  #view-anim{display:grid;grid-template-columns:auto minmax(320px,1fr);align-items:start;}
+  .stagecol{position:sticky;top:12px;}
+  .flow{columns:320px;column-gap:12px;}
+  .flow .card{break-inside:avoid;display:inline-block;width:100%;margin:0 0 12px;}
+  @media (max-width: 900px){
+    #view-anim{grid-template-columns:1fr;}
+    .stagecol{position:static;}
+  }   /* .row's display:flex was overriding hidden */
+  .pill:empty{display:none;}
+  /* collapsible cards: the title is a toggle button; collapsed = title only */
+  .card h2 .cardtog{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;}
+  .card h2 .cardtog:focus-visible{outline:2px solid var(--edit);outline-offset:2px;border-radius:3px;}
+  .card h2 .cardtog::before{content:"\25BE";font-size:10px;width:10px;}
+  .card.collapsed h2 .cardtog::before{content:"\25B8";}
+  .card.collapsed > :not(h2){display:none !important;}
+  .card.collapsed h2{margin:0;}
+  .secret{margin-left:auto;display:inline-flex;gap:4px;opacity:.12;transition:opacity .15s;}
+  .secret:hover,.secret:focus-within{opacity:1;}
+  .secret button{padding:2px 7px;font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>SSF2T Editor <span class="muted" style="font-weight:400;">0.8.0.0</span></h1>
+  <span class="pill" id="dirtyPill">0 bytes edited</span>
+  <span style="display:inline-flex;gap:6px;margin-left:4px;" role="tablist">
+    <button id="tabAnim" class="primary" role="tab" onclick="showTab('anim')">Character</button>
+    <button id="tabGlobal" role="tab" onclick="showTab('global')">Global</button>
+    <button id="tabTheory" role="tab" onclick="showTab('theory')">Theory Fighter</button>
+    <button id="tabTiles" role="tab" onclick="showTab('tiles')">Tiles</button>
+  </span>
+  <span class="legend">
+    <span><i class="sw" style="background:var(--vuln)"></i>hurtbox</span>
+    <span><i class="sw" style="background:var(--attack)"></i>attack</span>
+    <span><i class="sw" style="background:var(--push)"></i>pushbox</span>
+    <span><i class="sw" style="background:var(--throwable)"></i>throwbox</span>
+    <span><i class="sw" style="background:var(--axis)"></i>midpoint</span>
+    <span><i class="sw" style="background:var(--edit)"></i>selected (edit mode)</span>
+  </span>
+  <!-- "secret" quick-test buttons: nearly invisible until hovered or focused -->
+  <span class="secret" aria-label="Quick test">
+    <button type="button" onclick="secretCrazy()" title="SNK mode: every motion special gets an SNK-style long motion (Hadoukens get the pretzel)"
+            aria-label="Quick test: give every motion special an SNK-style motion">&#960;</button>
+    <button type="button" onclick="secretCrazy('ss')" title="Samurai Shodown mode: every motion special gets a Samurai Shodown hidden-move motion"
+            aria-label="Quick test: give every motion special a Samurai Shodown style motion">&#20365;</button>
+    <button type="button" onclick="secretDiscard()" title="Discard all edits (no prompt)"
+            aria-label="Quick test: discard all edits without asking">&#215;</button>
+  </span>
+</header>
+
+<main id="view-tiles" style="display:none;">
+  <div class="card" data-open style="width:100%;">
+    <h2>CPS-2 Tile Gallery <span class="muted">(sfx.*m mask ROMs, false-colour)</span></h2>
+    <div class="row" style="margin-bottom:8px;">
+      <label>Start tile <input id="t_start" type="text" value="0x0000" style="width:90px"/></label>
+      <label>Count <input id="t_count" type="number" value="256" min="1" max="4096" style="width:80px"/></label>
+      <label>Scale
+        <select id="t_scale"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+      </label>
+      <button class="primary" onclick="loadSheet()">Show</button>
+      <button onclick="jump(-256)">&larr; Prev</button>
+      <button onclick="jump(256)">Next &rarr;</button>
+      <span class="muted" id="t_status"></span>
+    </div>
+    <div class="row muted" style="margin-bottom:8px;">
+      Jump:
+      <button onclick="jumpTo(0x0000)">Ryu/Ken 0x0000</button>
+      <button onclick="jumpTo(0x0800)">Sprites 0x0800</button>
+      <button onclick="jumpTo(0x8000)">Font/Text 0x8000</button>
+    </div>
+    <div style="max-height:70vh;overflow:auto;border:1px solid var(--line);border-radius:6px;background:#0e0e24;">
+      <img id="t_sheet" alt="tile sheet" style="display:block;image-rendering:pixelated;"/>
+    </div>
+    <p class="muted" style="margin-top:8px;">Tiles are 16&times;16 CPS-2 OBJ tiles in a grayscale ramp (pen 15 = transparent).</p>
+  </div>
+</main>
+
+<main id="view-global" style="display:none;">
+  <div class="flow" style="flex:1;">
+    <p class="muted" style="margin:0 0 12px;column-span:all;">Settings on this tab apply to the whole game: every character, both versions. Per-character settings are on the Character tab.</p>
+    <div class="card">
+      <h2>Health</h2>
+      <div class="fields">
+        <label for="s_health">starting health</label><input id="s_health" type="number" step="1" min="1" max="16383" disabled/>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">
+        Both players, every round (originally 144). The bar shows at most 144, so
+        higher values keep it full until health drops below 144. <b>Shared by every character.</b>
+      </p>
+      <p class="muted statmsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>Stun</h2>
+      <div class="fields">
+        <label for="s_stun_light">stun, light hit</label><input id="s_stun_light" type="number" step="1" min="0" max="255" disabled/>
+        <label for="s_stun_medium">stun, medium hit</label><input id="s_stun_medium" type="number" step="1" min="0" max="255" disabled/>
+        <label for="s_stun_heavy">stun, heavy hit</label><input id="s_stun_heavy" type="number" step="1" min="0" max="255" disabled/>
+        <label for="s_stun_light_time">stun timer, light</label><input id="s_stun_light_time" type="number" step="1" min="0" max="999" disabled/>
+        <label for="s_stun_medium_time">stun timer, medium</label><input id="s_stun_medium_time" type="number" step="1" min="0" max="999" disabled/>
+        <label for="s_stun_heavy_time">stun timer, heavy</label><input id="s_stun_heavy_time" type="number" step="1" min="0" max="999" disabled/>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">
+        Base stun points a normal attack adds on a standing or crouching hit, by strength;
+        the game then adds a random amount per hit. The timer is how long (in frames)
+        the stun meter waits before draining. <b>Shared by every character.</b>
+      </p>
+      <details style="margin-top:8px;">
+        <summary class="muted">Reaction 0x0C table (not yet identified)</summary>
+        <div class="fields" style="margin-top:6px;">
+          <label for="s_stun_rc_light">stun, light</label><input id="s_stun_rc_light" type="number" step="1" min="0" max="255" disabled/>
+          <label for="s_stun_rc_medium">stun, medium</label><input id="s_stun_rc_medium" type="number" step="1" min="0" max="255" disabled/>
+          <label for="s_stun_rc_heavy">stun, heavy</label><input id="s_stun_rc_heavy" type="number" step="1" min="0" max="255" disabled/>
+        </div>
+        <p class="muted" style="margin:6px 0 0;">A second base-stun table the game uses for hit reaction 0x0C. That reaction didn't show up on standing, crouching or sweep hits, so it's unclear which hits use it.</p>
+      </details>
+      <p class="muted statmsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>Dizzy</h2>
+      <div class="fields">
+        <label for="s_dizzy_0">dizzy at (1st)</label><input id="s_dizzy_0" type="number" step="1" min="1" max="255" disabled/>
+        <label for="s_dizzy_1">dizzy at (2nd)</label><input id="s_dizzy_1" type="number" step="1" min="1" max="255" disabled/>
+        <label for="s_dizzy_2">dizzy at (3rd+)</label><input id="s_dizzy_2" type="number" step="1" min="1" max="255" disabled/>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">
+        Stun points needed to get dizzied, by how many times that player was already
+        dizzied this round. <b>Shared by every character.</b>
+      </p>
+      <p class="muted statmsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>Damage table</h2>
+      <p class="muted" style="margin:0 0 6px;">
+        Base damage of each damage class in a 2P match. Every attack box has a class
+        (pick it in Hitbox editing on the Character tab); changing a class here changes <b>every attack of
+        that class</b>, for all characters. The game adds a small random amount, then
+        the defender's defense takes off its share.
+      </p>
+      <label class="muted" style="display:block;margin-bottom:6px;"><input type="checkbox" id="dt_all" checked/>
+        also shift the single-player levels by the same amount</label>
+      <div class="physgrid" id="dtFields"></div>
+      <p class="muted statmsg" id="dtMsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>Game speed</h2>
+      <div class="fields">
+        <label for="s_speed_0">speed entry 0</label><input id="s_speed_0" type="number" step="1" min="1" max="255" disabled/>
+        <label for="s_speed_1">speed entry 1</label><input id="s_speed_1" type="number" step="1" min="1" max="255" disabled/>
+        <label for="s_speed_2">speed entry 2</label><input id="s_speed_2" type="number" step="1" min="1" max="255" disabled/>
+        <label for="s_speed_3">speed entry 3</label><input id="s_speed_3" type="number" step="1" min="1" max="255" disabled/>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">
+        Frame skip for each GAME SPEED setting in the service menu. Lower runs faster:
+        64 gives about 1.44 game ticks per screen frame, 112 about 1.29, 128 about 1.26.
+        <b>255 turns frame skipping off</b> (exactly one tick per frame). On this ROM's
+        region the menu's TURBO 0–3 most likely use entries 0–3, and FREE SELECT's three
+        choices use entries 1–3 (0–2 on Japanese boards). Shared by every character.
+      </p>
+      <p class="muted statmsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+    <div class="card">
+      <h2>Input leniency</h2>
+      <p class="muted" style="margin:0 0 6px;">
+        Every special move of every character at once. Per-move versions are in
+        <b>Special move inputs</b> on the Character tab. Times are game ticks (about
+        1.3 per frame at Turbo speed; 1 per frame with frame skip off).
+      </p>
+      <div class="row">
+        <button data-gedit onclick="globalInputs({action:'shortcuts_on'}, 'Shortcuts on')">Shortcuts on every move</button>
+        <button data-gedit onclick="globalInputs({action:'shortcuts_off'}, 'Shortcuts off')">Shortcuts off</button>
+      </div>
+      <p class="muted" style="margin:4px 0 8px;">Shortcuts: 2, 4, 6 and 8 in a motion (and a charge
+        move's release) also accept the two diagonals next to them, like newer games.</p>
+      <div class="row">
+        <label class="muted" for="g_dirlo">direction window</label>
+        <input id="g_dirlo" type="number" min="1" max="120" value="8" style="width:64px" data-gedit/>
+        <span class="muted">–</span>
+        <input id="g_dirhi" type="number" min="1" max="120" value="15" style="width:64px" data-gedit aria-label="direction window maximum"/>
+        <button data-gedit onclick="globalInputs({action:'dir_window', lo:+document.getElementById('g_dirlo').value, hi:+document.getElementById('g_dirhi').value}, 'Direction windows set')">Apply</button>
+      </div>
+      <p class="muted" style="margin:4px 0 8px;">Ticks allowed to reach each next direction (stock: random 8–15).</p>
+      <div class="row">
+        <label class="muted" for="g_btn">button windows</label>
+        <input id="g_btn" type="number" min="-30" max="30" value="2" style="width:64px" data-gedit/>
+        <span class="muted">ticks</span>
+        <button data-gedit onclick="globalInputs({action:'btn_shift', delta:+document.getElementById('g_btn').value}, 'Button windows changed')">Add</button>
+      </div>
+      <p class="muted" style="margin:4px 0 8px;">Adds (or with a negative number, takes) ticks from the time to press
+        the button after the last direction (stock 12 / 10 / 8 for light / medium / heavy).</p>
+      <div class="row"><button data-gedit onclick="globalInputs({action:'reset_timing'}, 'Input timing reset')">Reset all input timing</button></div>
+      <p class="muted statmsg" id="g_inpMsg" style="margin:6px 0 0;" role="status">Turn on edit mode to change these.</p>
+    </div>
+  </div>
+</main>
+
+<main id="view-theory" style="display:none;">
+  <div class="card" data-open style="width:100%;max-width:720px;">
+    <h2>Theory Fighter</h2>
+    <p class="muted" style="margin:0;">Coming later. (Placeholder so the feature isn't forgotten.)</p>
+  </div>
+</main>
+
+<main id="view-anim">
+  <div class="stagecol">
+    <div id="stageWrap">
+      <canvas id="astage" width="520" height="520" tabindex="0" aria-label="Animation viewer"></canvas>
+      <!-- Animation controls dock: slides up over the bottom of the viewer when the
+           mouse nears the bottom edge, so pose/frame changes need no scrolling. -->
+      <section id="animDock" aria-label="Animation controls">
+        <button id="dockHandle" type="button" aria-expanded="false" aria-controls="dockBody"
+                title="Hover the bottom of the viewer, or click to pin open">Animation &#9652;</button>
+        <div id="dockBody">
+          <div class="dockgrid">
+            <label for="a_index">movement / reactions</label>
+            <select id="a_index" onchange="loadAnim()"></select>
+            <label for="a_move">normals / throws</label>
+            <select id="a_move" onchange="loadAttack('a_move')"></select>
+            <label for="a_special">special move</label>
+            <select id="a_special" onchange="onSpecial()"></select>
+            <label for="a_variant">variant</label>
+            <select id="a_variant" onchange="loadAttack('a_variant')"></select>
+          </div>
+          <div class="row" id="projRow" hidden>
+            <label class="lbl" for="p_speed">projectile speed</label>
+            <select id="p_speed" disabled onchange="setProjSpeed()"></select>
+            <span class="muted">px per tick</span>
+          </div>
+          <p class="muted" id="projNote" hidden style="margin:4px 0 0;" role="status"></p>
+          <div id="physRow" hidden style="margin-top:6px;">
+            <div class="physgrid" id="physFields"></div>
+            <p class="muted" id="physNote" style="margin:4px 0 0;" role="status"></p>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <button onclick="stepFrame(-1)" aria-label="Previous frame">&larr; Prev</button>
+            <span id="a_fpos" class="pill">frame 0/0</span>
+            <button onclick="stepFrame(1)" aria-label="Next frame">Next &rarr;</button>
+            <label class="muted" for="f_dur">hold</label>
+            <input id="f_dur" type="number" min="1" max="255" step="1" style="width:64px" disabled
+                   aria-describedby="durNote"/>
+            <span class="muted">ticks</span>
+            <span id="a_mode" class="pill"></span>
+            <label><input type="checkbox" id="a_showmid" checked onchange="drawAnim()"/> Midpoint</label>
+            <label><input type="checkbox" id="a_showthrow" checked onchange="drawAnim()"/> Throwbox</label>
+          </div>
+          <div class="row" style="margin-top:6px;">
+            <span id="a_sum" class="pill" title="Ticks per phase, like the wiki's Simplified row (the wiki adds 1 to startup)"></span>
+          </div>
+          <p class="muted" id="durNote" style="margin:4px 0 0;" role="status"></p>
+        </div>
+      </section>
+    </div>
+    <p class="muted" id="a_meta" style="max-width:526px;margin-top:6px;"></p>
+  </div>
+  <!-- Cards flow into as many columns as the width allows (CSS columns); each
+       card moves on its own, and the browser balances column heights. -->
+  <div class="flow">
+    <div class="card" data-open>
+      <h2>Character</h2>
+      <div class="row">
+        <label class="lbl" for="a_char">character</label>
+        <select id="a_char" onchange="onAnimChar()"></select>
+      </div>
+      <div class="row">
+        <label class="lbl" for="a_ver">version</label>
+        <select id="a_ver" onchange="onAnimChar()">
+          <option value="new">New (Super Turbo)</option>
+          <option value="old">Old (Super SF2)</option>
+        </select>
+      </div>
+      <p class="muted" id="verNote" style="margin:6px 0 0;"></p>
+    </div>
+
+    <div class="card">
+      <h2>Hitbox editing</h2>
+      <button id="editBtn" onclick="toggleEdit()" aria-pressed="false">Edit mode: OFF (viewing)</button>
+      <div id="editPanel" style="margin-top:10px;">
+        <div class="fields">
+          <label for="f_vx">center X</label><input id="f_vx" type="number" min="-128" max="127" disabled/>
+          <label for="f_vy">center Y</label><input id="f_vy" type="number" min="-128" max="127" disabled/>
+          <label for="f_rx">half-width</label><input id="f_rx" type="number" min="0" max="255" disabled/>
+          <label for="f_ry">half-height</label><input id="f_ry" type="number" min="0" max="255" disabled/>
+        </div>
+        <p class="muted" id="selInfo" style="margin:8px 0 0;">Turn on edit mode, then click a box.</p>
+        <div id="dmgRow" hidden style="margin-top:8px;">
+          <div class="fields">
+            <label for="f_dmgclass">damage class</label>
+            <select id="f_dmgclass" disabled onchange="setDamageClass()"></select>
+          </div>
+          <p class="muted" id="dmgNote" style="margin:4px 0 0;" role="status"></p>
+        </div>
+        <p class="muted" style="margin:6px 0 0;">
+          Drag inside a box to move it, drag its edge to resize. Arrow keys nudge it
+          (Shift+arrows resize). A box is shared by every frame that uses its id, so an
+          edit changes all of them, including in other animations.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Boxes this frame</h2>
+      <table id="a_boxtab"><tbody></tbody></table>
+    </div>
+
+    <div class="card">
+      <h2>Walk speed &amp; defense</h2>
+      <div class="fields">
+        <label for="s_walk_fwd">walk forward</label><input id="s_walk_fwd" type="number" step="0.0625" min="0" max="32" disabled/>
+        <label for="s_walk_back">walk back</label><input id="s_walk_back" type="number" step="0.0625" min="0" max="32" disabled/>
+      </div>
+      <p class="muted" id="s_walk_note" style="margin:6px 0 0;">Pixels per game tick, for this character and version.</p>
+      <div class="fields" style="margin-top:10px;">
+        <label for="s_defense">defense</label><input id="s_defense" type="number" step="1" min="0" max="31" disabled/>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">
+        Damage this character takes is cut by defense/32 in a 2P match (Ryu 5 ≈ 16% less,
+        Zangief 10 ≈ 31% less). For this character and version.
+      </p>
+      <p class="muted statmsg" id="s_msg" style="margin:6px 0 0;" role="status">Turn on edit mode to change these.</p>
+    </div>
+
+    <div class="card">
+      <h2>Special move inputs</h2>
+      <p class="muted" style="margin:0 0 6px;">
+        Motions in numpad notation, facing right: <b>2</b> down, <b>6</b> forward,
+        <b>4</b> back, <b>8</b> up, <b>3</b> down-forward, <b>1</b> down-back
+        (236 = quarter circle forward, 623 = dragon punch, 1632143 = pretzel).
+        The game tries the moves top to bottom and the <b>first match wins</b>, so a
+        motion that contains another move's motion needs to sit above it.
+      </p>
+      <datalist id="motionPresets">
+        <option value="236">quarter circle forward</option><option value="214">quarter circle back</option>
+        <option value="623">dragon punch</option><option value="421">reverse dragon punch</option>
+        <option value="41236">half circle forward</option><option value="63214">half circle back</option>
+        <option value="236236">double quarter circle</option>
+        <option value="1632143">SNK: pretzel (Geese, Raging Storm)</option><option value="2363214">SNK: qcf, hcb</option>
+        <option value="2141236">SNK: qcb, hcf</option><option value="641236">SNK: f, hcf</option>
+        <option value="632146">SNK: hcb, f</option><option value="41236236">SNK: hcf, qcf</option>
+        <option value="3214623">Samurai Shodown: df, qcb, dp (Nakoruru, Ukyo)</option>
+        <option value="341236421">Samurai Shodown: df, hcf, rdp (Haohmaru)</option>
+        <option value="6321464">Samurai Shodown: hcb, f, b (Haohmaru chibi)</option>
+        <option value="123623">Samurai Shodown: db, qcf, dp (Kuroko chibi)</option>
+        <option value="32421">Samurai Shodown: df, d, b, rdp (Nakoruru chibi)</option>
+      </datalist>
+      <table id="inpTab" class="inptab"><tbody></tbody></table>
+      <p class="muted" id="inpNote" style="margin:6px 0 0;"></p>
+      <div class="row" style="margin-top:6px;"><button id="inpOrderReset" disabled onclick="resetInputOrder()">Reset order</button></div>
+      <p class="muted statmsg" id="inpMsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>Patch</h2>
+      <div class="row">
+        <button class="primary" onclick="exp('ips')">Export IPS</button>
+        <button onclick="exp('bps')">Export BPS</button>
+        <button onclick="exp('mra')">Export MRA</button>
+      </div>
+      <div class="row">
+        <button class="danger" onclick="patchRom()">Patch ROM now</button>
+        <button onclick="restoreRom()">Restore original ROM</button>
+      </div>
+      <div class="row">
+        <button onclick="reloadWorking()">Discard all edits</button>
+      </div>
+      <p class="muted" style="margin:8px 0 0;">
+        Edits are kept in memory until exported or patched. IPS / BPS are verified; if your
+        edits span several ROM files you get a zip with one patch per file. MRA is unverified.
+        <b>Patch ROM now</b> writes the edits straight into <code>ssf2t.zip</code> in the data
+        folder (first-time backups go to <code>*.orig</code>).
+      </p>
+      <p class="muted" id="patchMsg" style="margin:6px 0 0;" role="status"></p>
+    </div>
+  </div>
+</main>
+
+<script>
+const SCALE=3, CX=260;
+const CHAR_LIST=["ryu","honda","blanka","guile","ken","chunli","zangief","dhalsim",
+  "dictator","sagat","boxer","claw","cammy","thawk","feilong","deejay"];
+const CHAR_LABEL={ryu:"Ryu",honda:"E. Honda",blanka:"Blanka",guile:"Guile",ken:"Ken",
+  chunli:"Chun-Li",zangief:"Zangief",dhalsim:"Dhalsim",dictator:"Dictator (Bison)",
+  sagat:"Sagat",boxer:"Boxer (Balrog)",claw:"Claw (Vega)",cammy:"Cammy",thawk:"T. Hawk",
+  feilong:"Fei Long",deejay:"Dee Jay"};
+// Specials that throw a separate projectile object. Mapped ones (projectiles.json,
+// served by /api/projectiles) get a "Projectile · strength" variant per strength;
+// any listed here without a capture show a disabled placeholder instead.
+const PROJECTILE_MOVES=new Set(["Hadouken","Shakunetsu Hadouken","Shinku Hadouken","Sonic Boom",
+  "Kikoken","Yoga Fire","Tiger Shot","Ground Tiger Shot","Air Slasher"]);
+function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function clamp(v,a,z){return Math.max(a,Math.min(z,v));}
+
+// ---------------- tabs ----------------
+const TABS={anim:'tabAnim', global:'tabGlobal', theory:'tabTheory', tiles:'tabTiles'};
+function showTab(which){
+  for(const [v,tab] of Object.entries(TABS)){
+    document.getElementById('view-'+v).style.display=(v===which)?'':'none';
+    const b=document.getElementById(tab);
+    b.className=(v===which)?'primary':''; b.setAttribute('aria-selected', String(v===which));
+  }
+  if(which==='tiles' && !document.getElementById('t_sheet').src) loadSheet();
+}
+
+// ---------------- collapsible cards ----------------
+// Every card's title becomes a toggle; cards start collapsed (title only)
+// except those marked data-open (Character, and the single-card tabs).
+function initCollapsible(){
+  document.querySelectorAll('.card').forEach((card,i)=>{
+    const h=card.querySelector(':scope > h2'); if(!h || h.querySelector('.cardtog')) return;
+    const b=document.createElement('button'); b.type='button'; b.className='cardtog';
+    while(h.firstChild) b.appendChild(h.firstChild);
+    h.appendChild(b);
+    const set=open=>{ card.classList.toggle('collapsed',!open); b.setAttribute('aria-expanded',String(open)); };
+    set(card.hasAttribute('data-open'));
+    b.addEventListener('click',()=>set(card.classList.contains('collapsed')));
+  });
+}
+initCollapsible();
+
+// ---------------- "secret" quick-test buttons ----------------
+// pi: Ryu's Hadouken -> pretzel (1632143) and first priority (the pretzel
+// contains a whole DP, so it has to be checked before Shoryuken).
+// x: discard all edits without the confirmation prompt.
+// Crazy-motion modes: every special whose input can be rewritten (motion,
+// charge, 360; both versions) gets a long motion from one category. Within a character's punch
+// moves (and its kick moves) a motion is never reused, and never one that is
+// contained in another already given out (checked as subsequences, the way
+// the game reads a motion), so no priority changes are needed.
+// Consecutive repeats are folded (b, rdp = 4 then 421 -> 421): holding a
+// direction already satisfies the next identical step.
+const CRAZY_SETS={
+  snk:{label:'SNK mode', pretzelHadouken:true,          // KOF / Fatal Fury / Art of Fighting
+       motions:['1632143','2363214','2141236','641236','632146','41236236']},
+  ss:{label:'Samurai Shodown mode', pretzelHadouken:false,
+      motions:['3214623',    // Nakoruru Elelyu Kamui Rimuse; also Ukyo's chibi transformation (df, qcb, dp)
+               '341236421',  // Haohmaru hidden super (df, hcf, rdp)
+               '6321464',    // Haohmaru chibi transformation (hcb, f, b)
+               '123623',     // Kuroko chibi transformation (db, qcf, dp)
+               '32421']},    // Nakoruru chibi transformation (df, d, b, rdp)
+};
+const CRAZY_MOTIONS=CRAZY_SETS.snk.motions;
+function isSubseq(a,b){ let i=0; for(const c of b) if(c===a[i]) i++; return i===a.length; }
+async function secretCrazy(which='snk'){
+  const set=CRAZY_SETS[which], list=set.motions;
+  const msg=document.getElementById('inpMsg');
+  const chars=[...CHAR_LIST.map(c=>[c,'new']), ['akuma','new'], ...CHAR_LIST.map(c=>[c,'old'])];
+  const done=new Set(); let n=0, k=0;
+  for(const [char, ver] of chars){
+    let j; try{ const r=await fetch(`/api/inputs?char=${char}&ver=${ver}`); if(!r.ok) continue; j=await r.json(); }catch(e){ continue; }
+    const used={P:[], K:[]};
+    const clash=(c,grp)=>used[grp].some(u=>isSubseq(c,u)||isSubseq(u,c));
+    for(const m of j.moves){
+      if(!m.editable || m.kind==='mash' || done.has(m.sub)) continue;   // charge / 360 moves too
+      done.add(m.sub);
+      const grp = m.button==='K' ? 'K' : 'P';
+      let mot = set.pretzelHadouken && /^(gou )?hadouken$/i.test(m.name||'') ? '1632143' : null;
+      for(let t=0; !mot && t<list.length; t++){
+        const c=list[(k+t)%list.length];
+        if(!(set.pretzelHadouken && c==='1632143') && !clash(c,grp) && c.length<=m.max_dirs) mot=c;
+      }
+      if(!mot) continue;
+      used[grp].push(mot); k++;
+      const r=await fetch('/api/inputs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sub:m.sub, motion:mot})});
+      if(r.ok) n++;
+    }
+  }
+  await refreshDirty();
+  await loadInputs();
+  msg.textContent=`${set.label}: ${n} special moves now use ${which==='ss'?'Samurai Shodown':'SNK'}-style motions.`;
+}
+async function secretPretzel(){
+  const get=async()=>(await (await fetch('/api/inputs?char=ryu&ver=new')).json()).moves.find(m=>m.name==='Hadouken');
+  let h=await get(); if(!h) return;
+  await fetch('/api/inputs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sub:h.sub, motion:'1632143'})});
+  for(let i=0;i<8 && h.priority>0;i++){
+    await fetch('/api/inputs/priority',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({char:'ryu', ver:'new', sub:h.sub, move:'up'})});
+    h=await get();
+  }
+  await refreshDirty();
+  if(animChar==='ryu' && animVer==='new') await loadInputs();
+}
+async function secretDiscard(){
+  await fetch('/api/reload',{method:'POST'}); setDirty(0); loadStats();
+  if(curLoad) await curLoad();
+}
+
+// ---------------- patch / dirty ----------------
+async function refreshDirty(){ const j=await (await fetch('/api/info')).json(); setDirty(j.dirty_bytes); }
+function setDirty(n){
+  document.getElementById('dirtyPill').textContent=`${n} byte${n===1?'':'s'} edited`;
+  // discard / patch / restore all reset to 0: cached frame info (durations, baseline) is stale
+  if(n===0 && typeof frameInfoCache!=='undefined') for(const k in frameInfoCache) delete frameInfoCache[k];
+  if(n===0 && typeof loadDamageTable==='function'){ dmgCur=null; loadDamageTable(); }
+  if(n===0 && typeof loadInputs==='function' && typeof animChar!=='undefined' && animChar) loadInputs();
+}
+async function reloadWorking(){
+  if(!confirm('Discard every edit made since the server started? This cannot be undone.')) return;
+  await fetch('/api/reload',{method:'POST'}); setDirty(0); loadStats();
+  if(curLoad) await curLoad();     // re-read boxes from the original data
+}
+async function patchRom(){
+  const n=+(document.getElementById('dirtyPill').textContent.match(/\d+/)||[0])[0];
+  if(!n){ alert('There are no edits to write.'); return; }
+  const ok=confirm(
+    'WARNING: this writes your edits directly into the ROM files and cannot be undone from inside the game.\n\n'+
+    'Make sure you have your own backup of the original ssf2t.zip somewhere safe before continuing.\n\n'+
+    'Files that will be changed (in the editor\'s data folder):\n'+
+    '  • ssf2t.zip (the ROM the emulator loads)\n'+
+    '  • the loose sfxe.* program ROM files\n'+
+    '  • ssf2t_data.bin (the editor\'s baseline)\n\n'+
+    'The first time each file is patched, a copy is saved as <file>.orig and never overwritten, '+
+    'so "Restore original ROM" can bring it back. Other copies (e.g. Fightcade\'s ROM folder) are not touched.\n\n'+
+    'Emulators will report a checksum mismatch for a modified ROM; that is expected. '+
+    'Online play needs both players on the same ROM.\n\n'+
+    `Write ${n} edited byte${n===1?'':'s'} to the ROM now?`);
+  if(!ok) return;
+  const r=await fetch('/api/patch_rom',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true})});
+  const j=await r.json(); const msg=document.getElementById('patchMsg');
+  if(!r.ok){ msg.textContent='Not patched: '+(j.error||'failed'); alert('Not patched: '+(j.error||'failed')); return; }
+  setDirty(0);
+  msg.innerHTML=`Patched ${j.bytes_written} byte${j.bytes_written===1?'':'s'} into ${j.rom_files.join(', ')} `+
+    `(inside <code>ssf2t.zip</code>). Backups: ${j.backups.map(b=>'<code>'+b.split('/').pop()+'</code>').join(', ')}.`;
+}
+async function restoreRom(){
+  if(!confirm('Restore the original ROM from the *.orig backups?\n\nThis undoes every patch written with "Patch ROM now" and discards any unsaved edits.')) return;
+  const r=await fetch('/api/restore_rom',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true})});
+  const j=await r.json(); const msg=document.getElementById('patchMsg');
+  if(!r.ok){ msg.textContent=j.error||'restore failed'; return; }
+  setDirty(0); msg.textContent='Restored: '+j.restored.join(', ')+'.'; loadStats();
+  for(const k in bodySpriteCache) delete bodySpriteCache[k];
+  if(curLoad) await curLoad();
+}
+async function exp(fmt){
+  const r=await fetch('/api/export',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({format:fmt})});
+  if(!r.ok){ alert((await r.json()).error||'export failed'); return; }
+  const blob=await r.blob(); const cd=r.headers.get('Content-Disposition')||'';
+  const fn=(cd.match(/filename="(.+?)"/)||[])[1]||`patch.${fmt}`;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fn; a.click();
+}
+
+// ---------------- tiles ----------------
+function parseTile(v){ v=(''+v).trim(); return v.toLowerCase().startsWith('0x')?parseInt(v,16):parseInt(v,10)||0; }
+function loadSheet(){
+  const start=parseTile(document.getElementById('t_start').value);
+  const count=+document.getElementById('t_count').value||256;
+  const scale=+document.getElementById('t_scale').value||2;
+  document.getElementById('t_status').textContent='rendering…';
+  const img=document.getElementById('t_sheet');
+  img.onload=()=>{document.getElementById('t_status').textContent=`tiles 0x${start.toString(16)}–0x${(start+count-1).toString(16)}`;};
+  img.onerror=()=>{document.getElementById('t_status').textContent='render failed';};
+  img.src=`/api/tilesheet?start=${start}&count=${count}&cols=16&scale=${scale}&t=${Date.now()}`;
+}
+function jump(d){ const el=document.getElementById('t_start'); let s=parseTile(el.value)+d; if(s<0)s=0; el.value='0x'+s.toString(16); loadSheet(); }
+function jumpTo(n){ document.getElementById('t_start').value='0x'+n.toString(16); loadSheet(); }
+
+// ---------------- character / version ----------------
+let animFrames=[], animPos=0, animChar="ryu", animVer="new", charAttr=null, curLoad=null, oldReady=[];
+const q=()=>`char=${animChar}&ver=${animVer}`;
+async function initChars(){
+  const sel=document.getElementById('a_char');
+  for(const c of CHAR_LIST){ const o=document.createElement('option'); o.value=c; o.textContent=CHAR_LABEL[c]; sel.appendChild(o); }
+  sel.value="ryu";
+  try{ oldReady=(await (await fetch('/api/info')).json()).old_ready||[]; }catch(e){}
+}
+async function onAnimChar(){
+  animChar=document.getElementById('a_char').value;
+  const vsel=document.getElementById('a_ver');
+  const oldOk=oldReady.includes(animChar);
+  vsel.options[1].textContent = oldOk ? 'Old (Super SF2)' : 'Old (Super SF2) — not captured yet';
+  animVer=vsel.value;
+  document.getElementById('verNote').textContent = animVer!=='old' ? ''
+    : !oldOk ? "The old version's animations haven't been captured yet, so there is nothing to show for it."
+    : "Old version (Super SF2): its own animations, moves and hitboxes. Fireballs share their projectile object with the new version, so a fireball edit changes both.";
+  selBox=null; syncFields();
+  try{ const r=await fetch(`/api/charattr?char=${animChar}`); charAttr=r.ok?await r.json():null; }catch(e){ charAttr=null; }
+  await Promise.all([populateAnims(), populateMoves(), loadStats(), loadInputs()]);
+  await showStanding();      // only "movement / reactions" shows a value: 0 · Stand
+}
+
+// ---------------- dropdowns ----------------
+let animLabels={};
+// blank=true: a leading empty option, so a list that isn't driving the viewer
+// can sit blank (the animation dropdowns: only the one being shown has a value)
+function fillSelect(sel, items, emptyText, blank){
+  sel.innerHTML='';
+  if(!items.length){ const o=document.createElement('option'); o.value=''; o.textContent=emptyText; sel.appendChild(o); sel.disabled=true; return; }
+  sel.disabled=false;
+  if(blank){ const o=document.createElement('option'); o.value=''; o.textContent=''; sel.appendChild(o); }
+  // an item ['__group', label] starts a heading (optgroup) for the items after it
+  let parent=sel;
+  for(const [v,t,dis] of items){
+    if(v==='__group'){ parent=document.createElement('optgroup'); parent.label=t; sel.appendChild(parent); continue; }
+    const o=document.createElement('option'); o.value=v; o.textContent=t; if(dis) o.disabled=true; parent.appendChild(o);
+  }
+}
+// Which animation dropdown drives the viewer. Loading from one blanks the
+// others (special move + variant are one pair), so the filled-in box always
+// names what's on screen. Choosing the blank entry goes back to standing.
+const ANIM_SELECTS=['a_index','a_move','a_special','a_variant'];
+function blankOthers(keep){
+  for(const id of ANIM_SELECTS){
+    if(keep.includes(id)) continue;
+    document.getElementById(id).value='';
+  }
+  if(!keep.includes('a_special')) fillVariants();   // no special chosen -> empty variant list
+}
+async function showStanding(){
+  const ix=document.getElementById('a_index');
+  if([...ix.options].some(o=>o.value==='0')) ix.value='0';
+  await loadAnim();
+}
+async function populateAnims(){
+  animLabels={};
+  const sel=document.getElementById('a_index');
+  try{
+    const r=await fetch(`/api/animlist?${q()}`);
+    if(!r.ok){ fillSelect(sel,[], '(not available)'); return; }
+    const j=await r.json();
+    for(const a of j.anims) animLabels[a.index]=a.label;
+    fillSelect(sel, j.anims.map(a=>[a.index, `${a.index} · ${a.label} (${a.frames}f)`]), '(none)', true);
+  }catch(e){ fillSelect(sel,[],'(error)'); }
+}
+let specialGroups={};   // name -> [[key, variant label]]
+// stand_Medium Punch (forward) -> "Stand · forward + Medium Punch"; plain jumps
+// are neutral-jump normals, "(diagonal)" ones the forward/back-jump versions
+function prettyNormal(k){
+  const m=k.match(/^(stand|crouch|jump)_(.+?)(?: \((.+)\))?$/);
+  if(!m) return k[0].toUpperCase()+k.slice(1);
+  const [, cat, btn, v]=m;
+  let place=cat[0].toUpperCase()+cat.slice(1), what=btn;
+  if(cat==='jump') place = (v&&v.startsWith('diagonal')) ? 'Jump (diagonal)' : 'Jump (neutral)';
+  const dir = v==='diagonal' ? '' : v==='diagonal, down' ? 'down' : v;
+  if(dir==='close') what='close '+btn;
+  else if(dir) what=dir+' + '+btn;
+  return place+' · '+what;
+}
+// normals dropdown headings: far (plain stand / crouch / jump, incl. diagonal
+// jumps), close (proximity), command (direction + button), then throws
+const NORMAL_GROUPS=[['far','Far normals'],['close','Close normals'],['command','Command normals'],['other','Throws']];
+function normalGroup(k){
+  const m=k.match(/^(stand|crouch|jump)_.+?(?: \((.+)\))?$/);
+  if(!m) return 'other';
+  if(!m[2] || m[2]==='diagonal') return 'far';
+  return m[2]==='close' ? 'close' : 'command';
+}
+function groupNormals(items){
+  const out=[];
+  for(const [g,label] of NORMAL_GROUPS){
+    const its=items.filter(([k])=>normalGroup(k)===g);
+    if(its.length){ out.push(['__group',label]); out.push(...its); }
+  }
+  return out;
+}
+async function populateMoves(){
+  const ms=document.getElementById('a_move'), ss=document.getElementById('a_special');
+  specialGroups={};
+  let moves=[];
+  try{ const r=await fetch(`/api/attackmoves?${q()}`); if(r.ok) moves=(await r.json()).moves; }catch(e){}
+  const normals=[];
+  for(const k of moves){
+    const m=k.match(/^(special|super)_(.*) \((.*)\)$/);
+    if(!m){ normals.push([k, prettyNormal(k)]); continue; }
+    const name=m[2]+(m[1]==='super'?' (super)':'');
+    (specialGroups[name]=specialGroups[name]||[]).push([k, m[3]]);
+  }
+  projMoves={};
+  try{ const r=await fetch(`/api/projectiles?${q()}`); if(r.ok) projMoves=(await r.json()).moves; }catch(e){}
+  fillSelect(ms, groupNormals(normals), '(none captured)', true);
+  fillSelect(ss, Object.keys(specialGroups).map(n=>[n,n]), '(none captured)', true);
+  fillVariants();
+}
+let projMoves={};       // special name -> [strength] with a mapped projectile object
+let projCur=null;       // {move, strength, speed} of the loaded projectile
+function fillVariants(){
+  const name=document.getElementById('a_special').value;
+  const items=(specialGroups[name]||[]).map(([k,v])=>[k,v]);
+  const base=name.replace(' (super)','');
+  if(items.length && projMoves[name]){
+    for(const s of projMoves[name]) items.push(['__proj:'+s, 'Projectile · '+s]);
+  } else if(items.length && PROJECTILE_MOVES.has(base)) items.push(['__proj','Projectile (not captured)',true]);
+  fillSelect(document.getElementById('a_variant'), items, '—', true);
+}
+// ---- moving specials: starting speed / slowdown (px per tick) ----
+let physCur=null;   // {move, strength, fields}
+function physDistance(f){
+  // distance covered before the speed reaches 0 (constant slowdown): v^2 / (2a)
+  const v=f.find(x=>x.key==='speed'||x.key==='hit1_speed'), a=f.find(x=>x.key==='slowdown'||x.key==='hit1_slowdown');
+  if(!v) return '';
+  if(!a || a.value===0) return `Constant speed of ${v.value} px per tick for as long as the move lasts.`;
+  if(Math.sign(a.value)!==Math.sign(v.value)) return `Speeds up by ${Math.abs(a.value)} px per tick each tick.`;
+  return `Covers about ${Math.round(v.value*v.value/(2*a.value))} px before stopping (if the move lasts that long; slowdown keeps going past 0, so it then drifts back).`;
+}
+async function loadPhys(move, strength){
+  const row=document.getElementById('physRow'), box=document.getElementById('physFields');
+  physCur=null; row.hidden=true; box.innerHTML='';
+  if(!move || !strength) return;
+  const r=await fetch(`/api/movephys?move=${encodeURIComponent(move)}&strength=${encodeURIComponent(strength)}&${q()}`);
+  if(!r.ok) return;
+  const j=await r.json(); physCur={move, strength, fields:j.fields};
+  let anyShared=false;
+  for(const f of j.fields){
+    const id='ph_'+f.key, cell=document.createElement('span'), lab=document.createElement('label'), inp=document.createElement('input');
+    const shared=(f.shared_with||[]).length>0; anyShared=anyShared||shared;
+    cell.className='physcell';
+    lab.htmlFor=id; lab.className='muted'; lab.textContent=f.label+(shared?' *':'');
+    inp.id=id; inp.type='number'; inp.step='0.0625'; inp.value=f.value;
+    inp.title=`original ${f.original} px per tick · ${f.addr}${f.encrypted?' (encrypted code)':''}`
+      +(shared?`\nAlso used by: ${f.shared_with.join(', ')}`:'');
+    inp.disabled=!editMode;
+    inp.addEventListener('change', ()=>setPhys(f.key, +inp.value));
+    cell.appendChild(lab); cell.appendChild(inp); box.appendChild(cell);
+  }
+  document.getElementById('physNote').textContent='Movement, px per game tick. '+physDistance(j.fields)
+    +(anyShared?' * = also used by other moves (hover for which); editing it changes them too.':'');
+  row.hidden=false;
+}
+async function setPhys(key, value){
+  if(!editMode || !physCur) return;
+  const r=await fetch('/api/movephys',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({char:animChar, ver:animVer, move:physCur.move, strength:physCur.strength, key, value})});
+  const j=await r.json();
+  if(!r.ok){ document.getElementById('physNote').textContent='Not saved: '+(j.error||'failed'); return; }
+  setDirty(j.dirty_bytes); await loadPhys(physCur.move, physCur.strength);
+}
+function syncPhysEnabled(){ document.querySelectorAll('#physFields input').forEach(i=>i.disabled=!editMode); }
+function showProj(info){
+  const row=document.getElementById('projRow'), note=document.getElementById('projNote');
+  projCur=info; row.hidden=note.hidden=!info;
+  if(!info) return;
+  const sp=info.speed, sel=document.getElementById('p_speed');
+  fillSelect(sel, sp.choices.map(v=>[v, v+(v===sp.original?' (original)':'')]), '—');
+  sel.value=sp.value; syncProjEnabled();
+  let t=`Speed pointer at ${sp.slot}${sp.encrypted?' (encrypted code)':''}. Boxes come from the projectile's own hitbox block ${info.block}.`;
+  if(sp.shared_with.length) t+=` The game uses the same speed for ${sp.shared_with.join(', ')}.`;
+  note.textContent=t;
+}
+function syncProjEnabled(){
+  const sel=document.getElementById('p_speed');
+  sel.disabled=!editMode || !projCur || !projCur.speed.editable;
+}
+async function setProjSpeed(){
+  if(!editMode || !projCur) return;
+  const r=await fetch('/api/projspeed',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({char:animChar, ver:animVer, move:projCur.move, strength:projCur.strength, speed:+document.getElementById('p_speed').value})});
+  const j=await r.json();
+  if(!r.ok){ document.getElementById('projNote').textContent='Not saved: '+(j.error||'failed'); return; }
+  setDirty(j.dirty_bytes); showProj({...projCur, speed:j.speed});
+}
+function onSpecial(){
+  fillVariants();
+  if(!document.getElementById('a_special').value){ showStanding(); return; }
+  // pick the first real variant so the shown animation matches the boxes
+  const vs=document.getElementById('a_variant');
+  const first=[...vs.options].find(o=>o.value && !o.disabled);
+  if(first) vs.value=first.value;
+  loadAttack('a_variant');
+}
+
+// ---------------- loading animations ----------------
+const bodySpriteCache={};
+function showMessage(lines){
+  animFrames=[]; const cv=document.getElementById('astage'), c=cv.getContext('2d');
+  c.clearRect(0,0,cv.width,cv.height); c.fillStyle=getCSS('--muted'); c.font='14px sans-serif';
+  lines.forEach((l,i)=>c.fillText(l,20,40+i*22));
+  document.getElementById('a_fpos').textContent='frame 0/0'; document.querySelector('#a_boxtab tbody').innerHTML='';
+}
+async function loadFrames(url, modeText, reload){
+  const r=await fetch(url);
+  if(!r.ok){
+    let msg='Nothing to show for this selection.';
+    try{ msg=(await r.json()).error||msg; }catch(e){}
+    showMessage([msg]); document.getElementById('a_mode').textContent=''; return;
+  }
+  const j=await r.json(); animFrames=j.frames;
+  if(!reload){ animPos=0; selBox=null; }
+  animPos=Math.min(animPos, Math.max(0,animFrames.length-1));
+  fitAnim(); document.getElementById('a_mode').textContent=modeText; syncFields(); drawAnim();
+}
+async function loadAnim(reload){
+  const ix=document.getElementById('a_index');
+  let idx=ix.value;
+  if(idx===''){
+    // blank chosen (or nothing selected yet): go back to standing if there is one
+    if(!reload && [...ix.options].some(o=>o.value==='0')){ ix.value='0'; idx='0'; }
+    else { showMessage(["This character/version has no animations to show yet."]); return; }
+  }
+  if(!reload) blankOthers(['a_index']);
+  curLoad=()=>loadAnim(true);
+  showProj(null); loadPhys(null);
+  await loadFrames(`/api/charanim?anim=${idx}&${q()}`, animLabels[idx]||('anim '+idx), reload);
+}
+async function loadAttack(which, reload){
+  const key=document.getElementById(which).value;
+  if(key==='__proj') return;
+  if(!key){ if(!reload) await showStanding(); return; }   // blank -> back to standing
+  if(!reload) blankOthers(which==='a_move' ? ['a_move'] : ['a_special','a_variant']);
+  curLoad=()=>loadAttack(which,true);
+  const label = which==='a_move' ? prettyNormal(key) : `${document.getElementById('a_special').value} · ${document.getElementById('a_variant').selectedOptions[0].textContent}`;
+  if(key.startsWith('__proj:')){
+    const move=document.getElementById('a_special').value, strength=key.slice(7);
+    const url=`/api/projanim?move=${encodeURIComponent(move)}&strength=${encodeURIComponent(strength)}&${q()}`;
+    await loadFrames(url, label, reload);
+    try{ const j=await (await fetch(url)).json();
+      showProj(j.speed ? {move, strength, speed:j.speed, block:j.hitbox_block} : null); }catch(e){ showProj(null); }
+    loadPhys(null);
+    return;
+  }
+  showProj(null);
+  await loadFrames(`/api/attackanim?move=${encodeURIComponent(key)}&${q()}`, label, reload);
+  // moving specials: show their speed/slowdown fields (hidden for everything else)
+  if(which==='a_variant') await loadPhys(document.getElementById('a_special').value,
+                                         document.getElementById('a_variant').selectedOptions[0].textContent);
+  else await loadPhys(null);
+}
+function stepFrame(d){ if(!animFrames.length) return; animPos=(animPos+d+animFrames.length)%animFrames.length; syncFields(); drawAnim(); }
+
+async function getBodySprite(objPtr){
+  if(bodySpriteCache[objPtr]) return bodySpriteCache[objPtr];
+  const resp=await fetch(`/api/bodysprite?obj_ptr=${objPtr}&scale=1&sub_offset=0`);
+  if(!resp.ok || resp.headers.get('X-Error')) return null;
+  const e={img:await createImageBitmap(await resp.blob()),
+    originX:+resp.headers.get('X-Origin-X')||0, originY:+resp.headers.get('X-Origin-Y')||0,
+    nativeW:+resp.headers.get('X-Sprite-W')||1, nativeH:+resp.headers.get('X-Sprite-H')||1};
+  bodySpriteCache[objPtr]=e; return e;
+}
+// Place the origin so the whole animation (sprites + boxes) fits; head wins if too tall.
+let animCY=300;
+function fitAnim(){
+  const H=document.getElementById('astage').height, pad=12; let top=0, bot=0;
+  for(const fr of animFrames){
+    top=Math.max(top, fr.spr_top||0); bot=Math.max(bot, fr.spr_bot||0);
+    for(const b of Object.values(fr.boxes||{})){
+      if(!b||b.empty||(!b.rad_x&&!b.rad_y)) continue;
+      top=Math.max(top, b.val_y+b.rad_y); bot=Math.max(bot, -(b.val_y-b.rad_y));
+    }
+  }
+  const need=top*SCALE+pad;
+  animCY=Math.min(Math.max(300, need), H-bot*SCALE-pad);
+  if(animCY<need) animCY=Math.min(need, H-pad);
+}
+
+// ---------------- drawing ----------------
+const CH_COL={vuln0:'--vuln',vuln1:'--vuln',vuln2:'--vuln',attack:'--attack',push:'--push'};
+const CH_LABEL={vuln0:'hurt',vuln1:'hurt',vuln2:'hurt',attack:'attack',push:'push'};
+const ORDER=['push','vuln0','vuln1','vuln2','attack'];          // draw order (attack on top)
+function boxRect(b){ const w=b.rad_x*2*SCALE, h=b.rad_y*2*SCALE; return {x:CX+b.val_x*SCALE-w/2, y:animCY-b.val_y*SCALE-h/2, w, h}; }
+function live(b){ return b && !b.empty && (b.rad_x||b.rad_y); }
+
+async function drawAnim(){
+  const CY=animCY, cv=document.getElementById('astage'), ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle=getCSS('--line'); ctx.lineWidth=1;
+  for(let x=0;x<=cv.width;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,cv.height);ctx.stroke();}
+  for(let y=0;y<=cv.height;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cv.width,y);ctx.stroke();}
+  const fr=animFrames[animPos]; if(!fr) return;
+  const bx=fr.boxes||{};
+  // throwbox range (per-char half-width from the 0x7F7BA table)
+  let trng=0;
+  if(document.getElementById('a_showthrow').checked && charAttr && charAttr.throw_range){
+    trng=charAttr.throw_range; ctx.save();
+    ctx.globalAlpha=0.10; ctx.fillStyle=getCSS('--throwable'); ctx.fillRect(CX-trng*SCALE,0,trng*2*SCALE,cv.height);
+    ctx.globalAlpha=0.85; ctx.strokeStyle=getCSS('--throwable'); ctx.setLineDash([5,4]); ctx.beginPath();
+    ctx.moveTo(CX-trng*SCALE,0);ctx.lineTo(CX-trng*SCALE,cv.height);ctx.moveTo(CX+trng*SCALE,0);ctx.lineTo(CX+trng*SCALE,cv.height);
+    ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle=getCSS('--throwable'); ctx.font='10px monospace';
+    ctx.fillText('throw ±'+trng, CX+trng*SCALE+3, 12); ctx.restore();
+  }
+  const sp=await getBodySprite(fr.obj_ptr);
+  if(fr!==animFrames[animPos]) return;              // a newer draw started while we waited
+  if(sp){ ctx.imageSmoothingEnabled=false; ctx.globalAlpha=0.8;
+    ctx.drawImage(sp.img, CX-sp.originX*SCALE, CY-sp.originY*SCALE, sp.nativeW*SCALE, sp.nativeH*SCALE); ctx.globalAlpha=1; }
+  // boxes + table
+  const tb=document.querySelector('#a_boxtab tbody'); tb.innerHTML='';
+  const idOf={vuln0:(fr.vuln_ids||[])[0],vuln1:(fr.vuln_ids||[])[1],vuln2:(fr.vuln_ids||[])[2],push:fr.push_id,attack:fr.attack_id};
+  for(const ch of ORDER){
+    const b=bx[ch]; if(!live(b)) continue;
+    const c=getCSS(CH_COL[ch]), r=boxRect(b), isSel=editMode && selBox===ch;
+    ctx.globalAlpha=0.25; ctx.fillStyle=c; ctx.fillRect(r.x,r.y,r.w,r.h);
+    ctx.globalAlpha=1; ctx.strokeStyle=c; ctx.lineWidth=2; ctx.strokeRect(r.x,r.y,r.w,r.h);
+    ctx.fillStyle=c; ctx.font='10px monospace'; ctx.fillText(CH_LABEL[ch],r.x+2,r.y-2);
+    if(isSel){
+      ctx.strokeStyle=getCSS('--edit'); ctx.lineWidth=2; ctx.setLineDash([4,3]); ctx.strokeRect(r.x-2,r.y-2,r.w+4,r.h+4); ctx.setLineDash([]);
+      ctx.fillStyle=getCSS('--edit');
+      for(const [hx,hy] of [[r.x,r.y+r.h/2],[r.x+r.w,r.y+r.h/2],[r.x+r.w/2,r.y],[r.x+r.w/2,r.y+r.h]]) ctx.fillRect(hx-3,hy-3,6,6);
+    }
+    const tr=document.createElement('tr'); tr.className='box'+(isSel?' sel':'');
+    tr.innerHTML=`<td style="color:${c}">${CH_LABEL[ch]}</td><td>id${idOf[ch]||0}</td><td>${b.val_x},${b.val_y}</td><td>${b.rad_x}×${b.rad_y}</td><td><code>${b.addr||''}</code></td>`;
+    tr.onclick=()=>{ if(editMode){ selBox=ch; syncFields(); drawAnim(); } };
+    tb.appendChild(tr);
+  }
+  if(document.getElementById('a_showmid').checked){
+    ctx.save(); ctx.strokeStyle=getCSS('--axis'); ctx.fillStyle=getCSS('--axis'); ctx.globalAlpha=0.9; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(CX,0); ctx.lineTo(CX,cv.height); ctx.moveTo(0,CY); ctx.lineTo(cv.width,CY); ctx.stroke();
+    ctx.lineWidth=2; ctx.beginPath(); ctx.arc(CX,CY,7,0,Math.PI*2); ctx.stroke(); ctx.beginPath(); ctx.arc(CX,CY,2,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=1; ctx.font='10px monospace'; ctx.fillText('midpoint (0,0)', CX+10, CY-6); ctx.restore();
+  }
+  if(editMode){
+    ctx.fillStyle=getCSS('--edit'); ctx.fillRect(0,0,cv.width,22);
+    ctx.fillStyle='#1b1d23'; ctx.font='bold 12px sans-serif';
+    ctx.fillText('EDIT MODE — click a box, drag to move, drag an edge to resize', 8, 15);
+  }
+  document.getElementById('a_fpos').textContent=`frame ${animPos+1}/${animFrames.length}`;
+  document.getElementById('a_meta').innerHTML=
+    `offset <code>0x${fr.offset.toString(16)}</code> · dur ${fr.dur} · obj <code>0x${fr.obj_ptr.toString(16)}</code>`+
+    `${(fr.flags&0x8000)?' · <b>loops</b>':''}${trng?` · throwbox ±${trng} (<code>${charAttr.addr_6c}</code>)`:''}`;
+}
+
+// ---------------- edit mode ----------------
+let editMode=false, selBox=null, drag=null;
+function toggleEdit(){
+  editMode=!editMode;
+  const b=document.getElementById('editBtn');
+  b.classList.toggle('on',editMode); b.setAttribute('aria-pressed',String(editMode));
+  b.textContent = editMode ? 'Edit mode: ON (click a box to edit)' : 'Edit mode: OFF (viewing)';
+  document.getElementById('astage').classList.toggle('editing',editMode);
+  if(!editMode){ selBox=null; drag=null; }
+  syncFields(); syncStatsEnabled(); syncProjEnabled(); syncPhysEnabled(); syncDamageEnabled(); syncInputsEnabled(); drawAnim();
+}
+
+// ---------------- character stats ----------------
+const STAT_IDS=['walk_fwd','walk_back','dizzy_0','dizzy_1','dizzy_2','health',
+  'stun_light','stun_medium','stun_heavy','stun_light_time','stun_medium_time','stun_heavy_time',
+  'stun_rc_light','stun_rc_medium','stun_rc_heavy','speed_0','speed_1','speed_2','speed_3','defense'];
+let stats=null;
+function syncStatsEnabled(){
+  // a field the backend doesn't offer (e.g. no ssf2t.key for encrypted values) stays locked
+  for(const id of STAT_IDS) document.getElementById('s_'+id).disabled=!editMode || !stats || !stats[id];
+  // each stats card has its own status line; the first one carries the edit-mode hint
+  document.querySelectorAll('.statmsg').forEach(el=>el.textContent='');
+  document.getElementById('s_msg').textContent = editMode ? 'Changes are saved as you make them.' : 'Turn on edit mode to change these.';
+}
+async function loadStats(){
+  stats=null;
+  try{ const r=await fetch(`/api/stats?${q()}`); if(r.ok) stats=(await r.json()).stats; }catch(e){}
+  for(const id of STAT_IDS){
+    const el=document.getElementById('s_'+id), s=stats&&stats[id];
+    el.value = s ? s.value : '';
+    el.title = s ? `original ${s.original} · ${s.addr}${s.sites>1?` (+${s.sites-1} more)`:''}${s.encrypted?' · encrypted code':''}` : 'not available';
+  }
+  document.getElementById('s_walk_note').textContent = stats
+    ? `Pixels per game tick, for this character and version (originally ${stats.walk_fwd.original} forward, ${stats.walk_back.original} back).`
+    : 'Not available.';
+  syncStatsEnabled();
+}
+// status text next to the field's own card (fields without an input, e.g. dizzy_3..11
+// written by the "3rd+" box, report in the first stats card)
+function statMsg(field, text){
+  const inp=document.getElementById('s_'+field);
+  const el=(inp && inp.closest('.card').querySelector('.statmsg')) || document.getElementById('s_msg');
+  el.textContent=text;
+}
+async function setStat(field, value){
+  const r=await fetch('/api/stats',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({char:animChar, ver:animVer, field, value})});
+  const j=await r.json();
+  if(!r.ok){ statMsg(field,'Not saved: '+(j.error||'failed')); await loadStats(); return; }
+  setDirty(j.dirty_bytes); return j;
+}
+for(const id of STAT_IDS){
+  document.getElementById('s_'+id).addEventListener('change', async ()=>{
+    if(!editMode) return;
+    const v=+document.getElementById('s_'+id).value;
+    if(id==='dizzy_2'){                       // "3rd+" = every entry from the third on
+      for(let n=2;n<12;n++) await setStat('dizzy_'+n, v);
+    } else await setStat(id, v);
+    await loadStats();
+    statMsg(id,'Saved.');
+  });
+}
+// ---------------- frame data (durations) ----------------
+var frameInfoCache={};   // var: setDirty may run before this line (no TDZ)
+function hexOff(o){ return '0x'+(+o).toString(16).toUpperCase().padStart(6,'0'); }
+// startup / active / recovery in ticks, grouped like the wiki's "Simplified" row
+function frameSummary(){
+  if(!animFrames.length) return '';
+  const segs=[];
+  for(const f of animFrames){
+    const act=!!(f.boxes && f.boxes.attack), d=f.dur||0;
+    if(segs.length && segs[segs.length-1].act===act) segs[segs.length-1].n+=d; else segs.push({act, n:d});
+  }
+  const total=segs.reduce((s,x)=>s+x.n,0);
+  if(!segs.some(s=>s.act)) return `${total} ticks total`;
+  const parts=segs.map((s,i)=> s.act ? `active ${s.n}` : i===0 ? `startup ${s.n}` : i===segs.length-1 ? `recovery ${s.n}` : `gap ${s.n}`);
+  return parts.join(' · ')+` (${total} total)`;
+}
+async function syncDur(){
+  const el=document.getElementById('f_dur'), note=document.getElementById('durNote');
+  document.getElementById('a_sum').textContent=frameSummary();
+  const fr=animFrames[animPos];
+  if(!fr){ el.value=''; el.disabled=true; note.textContent=''; return; }
+  el.value=fr.dur;
+  const key=hexOff(fr.offset);
+  let info=frameInfoCache[key];
+  if(!info){
+    try{ const r=await fetch(`/api/frameinfo?offset=${key}`); info=r.ok?await r.json():null; }catch(e){ info=null; }
+    if(info) frameInfoCache[key]=info;
+  }
+  if(animFrames[animPos]!==fr) return;          // moved on while fetching
+  el.disabled=!editMode || !info || !info.editable;
+  if(!info){ note.textContent=''; return; }
+  const others=info.users.length-1;
+  note.textContent = !info.editable ? 'This frame is held by game code (duration 0), so its length is set elsewhere.'
+    : (fr.dur!==info.original ? `Originally ${info.original} ticks. ` : '')
+      + (others>0 ? `Shared with ${others} other animation${others>1?'s':''}: ${info.users.slice(0,4).join(', ')}${others>3?'…':''}. Changing it changes all of them.` : '');
+}
+document.getElementById('f_dur').addEventListener('change', async ()=>{
+  const fr=animFrames[animPos]; if(!editMode || !fr) return;
+  const v=+document.getElementById('f_dur').value, key=hexOff(fr.offset);
+  const r=await fetch('/api/framedur',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({offset:key, dur:v})});
+  const j=await r.json();
+  if(!r.ok){ document.getElementById('durNote').textContent='Not saved: '+(j.error||'failed'); document.getElementById('f_dur').value=fr.dur; return; }
+  for(const f of animFrames) if(f.offset===fr.offset) f.dur=j.dur;   // same record can repeat in a list
+  if(frameInfoCache[key]) frameInfoCache[key].dur=j.dur;
+  setDirty(j.dirty_bytes); syncDur();
+});
+// ---------------- damage ----------------
+let dmgCur=null;    // /api/damage result for the selected attack box
+async function syncDamage(){
+  const row=document.getElementById('dmgRow'), sel=document.getElementById('f_dmgclass');
+  const b=curBox();
+  if(selBox!=='attack' || !b){ row.hidden=true; dmgCur=null; return; }
+  if(!dmgCur || dmgCur.addr!==b.addr){
+    try{ const r=await fetch(`/api/damage?addr=${b.addr}`); dmgCur=r.ok?await r.json():null; }catch(e){ dmgCur=null; }
+  }
+  if(!dmgCur){ row.hidden=true; return; }
+  row.hidden=false;
+  fillSelect(sel, dmgCur.classes.map(c=>[c.class, `class ${c.class} · ${c.base} damage`+(c.class===dmgCur.original_class?' (original)':'')]), '—');
+  sel.value=dmgCur.class; sel.disabled=!editMode;
+  document.getElementById('dmgNote').textContent=
+    `In a 2P match this hit does about ${dmgCur.range[0]}–${dmgCur.range[1]} before the defender's defense `
+    +`(base ${dmgCur.base} plus a random amount). The class is part of this attack box, so it changes every frame that uses the box.`;
+}
+async function setDamageClass(){
+  const b=curBox(); if(!editMode || !b) return;
+  const r=await fetch('/api/damage',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({addr:b.addr, class:+document.getElementById('f_dmgclass').value})});
+  const j=await r.json();
+  if(!r.ok){ document.getElementById('dmgNote').textContent='Not saved: '+(j.error||'failed'); return; }
+  dmgCur=j; setDirty(j.dirty_bytes); syncDamage();
+}
+async function loadDamageTable(){
+  const box=document.getElementById('dtFields'); box.innerHTML='';
+  let j; try{ j=await (await fetch('/api/damagetable')).json(); }catch(e){ return; }
+  for(const c of j.classes){
+    const cell=document.createElement('span'), lab=document.createElement('label'), inp=document.createElement('input');
+    cell.className='physcell'; lab.className='muted'; lab.htmlFor='dt_'+c.class; lab.textContent='class '+c.class;
+    inp.id='dt_'+c.class; inp.type='number'; inp.min='1'; inp.max='255'; inp.value=c.base;
+    inp.title=`original ${c.original} · ${j.table} + ${32*c.class+j.level}`; inp.disabled=!editMode;
+    inp.addEventListener('change', async ()=>{
+      const r=await fetch('/api/damagetable',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({class:c.class, value:+inp.value, all_levels:document.getElementById('dt_all').checked})});
+      const k=await r.json();
+      document.getElementById('dtMsg').textContent = r.ok ? `Class ${c.class} now ${k.base}.` : 'Not saved: '+(k.error||'failed');
+      if(r.ok){ setDirty(k.dirty_bytes); dmgCur=null; syncDamage(); }
+    });
+    cell.appendChild(lab); cell.appendChild(inp); box.appendChild(cell);
+  }
+}
+// ---------------- special move inputs ----------------
+const NUMPAD_ARROW={'1':'↙','2':'↓','3':'↘','4':'←','5':'•','6':'→','7':'↖','8':'↑','9':'↗'};
+const BTN_LABEL={P:'punch',K:'kick',PK:'punch or kick'};
+function arrows(m){ return [...(m||'')].map(c=>NUMPAD_ARROW[c]||c).join(''); }
+let inputsCur=null;
+async function loadInputs(){
+  const tb=document.querySelector('#inpTab tbody'); tb.innerHTML='';
+  inputsCur=null;
+  try{ const r=await fetch(`/api/inputs?${q()}`); if(r.ok) inputsCur=await r.json(); }catch(e){}
+  const note=document.getElementById('inpNote');
+  if(!inputsCur){ note.textContent='Not available for this character.'; syncInputsEnabled(); return; }
+  const n=inputsCur.moves.length;
+  inputsCur.moves.forEach((m,i)=>{
+    const tr=document.createElement('tr');
+    const up=document.createElement('button'), dn=document.createElement('button');
+    up.textContent='▲'; dn.textContent='▼';
+    const nm=m.name || (m.editable ? 'motion move' : 'other input');
+    up.setAttribute('aria-label',`try ${nm} earlier`); dn.setAttribute('aria-label',`try ${nm} later`);
+    up.dataset.lock = i===0 ? '1' : ''; dn.dataset.lock = i===n-1 ? '1' : '';
+    up.onclick=()=>moveInput(m.sub,'up'); dn.onclick=()=>moveInput(m.sub,'down');
+    const tdo=document.createElement('td'); tdo.appendChild(up); tdo.appendChild(dn);
+    const tdn=document.createElement('td');
+    tdn.textContent = (m.priority+1)+'. '+nm+(m.priority!==m.original_priority?' *':'');
+    tdn.title = m.sub + (m.priority!==m.original_priority ? ` · originally #${m.original_priority+1}` : '');
+    const tdi=document.createElement('td'), tda=document.createElement('td');
+    tda.className='arrows';
+    const btnw=BTN_LABEL[m.button]||m.button||'';
+    const extra=[];                                   // a second row: charge time / mash fields
+    if(m.editable && m.kind!=='mash'){
+      const inp=document.createElement('input');
+      inp.type='text'; inp.inputMode='numeric'; inp.setAttribute('list','motionPresets');
+      inp.value=m.motion||''; inp.maxLength=2*m.max_dirs; inp.dataset.edit='1';
+      if(!m.motion) inp.placeholder='game input';
+      inp.setAttribute('aria-label',`${nm} motion (numpad)`);
+      inp.title = (m.kind==='motion' ? `original ${m.original}` : `originally: ${m.describe}`)
+        + ` · up to ${m.max_dirs} directions · ${m.mode==='engine'?'rewritten checker':'game checker'}`;
+      inp.addEventListener('change',()=>setInput(m.sub, inp.value.trim(), nm));
+      tdi.appendChild(inp);
+      if(m.kind==='motion')
+        tda.textContent = arrows(m.motion)+' + '+btnw+(m.motion!==m.original?` (was ${arrows(m.original)})`:'');
+      else
+        tda.textContent = m.motion ? `${arrows(m.motion)} + ${btnw} (was ${m.describe})` : m.describe;
+      const rs=document.createElement('button'); rs.textContent='reset'; rs.dataset.edit='1';
+      rs.setAttribute('aria-label',`reset ${nm} input`); rs.onclick=()=>setInput(m.sub, null, nm);
+      const tdr=document.createElement('td'); tdr.appendChild(rs);
+      tr.append(tdo,tdn,tdi,tda,tdr);
+      // shortcuts: motion rows toggle a * after every 2/4/6/8; charge rows the release
+      if(m.motion){
+        const on=hasShortcuts(m.motion);
+        extra.push(checkField(`${nm} shortcuts`, 'shortcuts', on,
+          v=>setInput(m.sub, toggleShortcuts(m.motion, v), nm),
+          'cardinal directions (2, 4, 6, 8) also accept the two diagonals next to them (a * in the motion)'));
+      } else if(m.release_shortcut!==null && m.release_shortcut!==undefined){
+        extra.push(checkField(`${nm} release shortcut`, 'release shortcut', m.release_shortcut,
+          v=>postInput('/api/inputs/release', {sub:m.sub, shortcut:v}, nm, 'release shortcut'),
+          'the release direction also accepts the two diagonals next to it'));
+      }
+      timingFields(m, nm).forEach(x=>extra.push(x));
+      if(m.kind==='charge' && m.charge && m.charge.length && !m.motion){
+        const c=m.charge[0];
+        extra.push(numField(`${nm} charge time`, 'charge', c.frames, 1, 255,
+          v=>setCharge(m.sub, v, nm), `ticks held (originally ${c.original})`
+            + (c.shared_with.length ? ` · shared with ${c.shared_with.join(', ')}` : '')));
+      }
+    } else if(m.kind==='mash'){
+      tdi.colSpan=2; tdi.className='muted'; tdi.textContent=m.describe;
+      const rs=document.createElement('button'); rs.textContent='reset'; rs.dataset.edit='1';
+      rs.setAttribute('aria-label',`reset ${nm} input`); rs.onclick=()=>setInput(m.sub, null, nm);
+      const tdr=document.createElement('td'); tdr.appendChild(rs);
+      tr.append(tdo,tdn,tdi,tdr);
+      extra.push(numField(`${nm} presses`, 'presses', m.mash[0].count, 1, 30,
+        v=>setMash(m.sub, 'all', {presses:v}, nm), `presses needed (originally ${m.mash[0].orig_count})`));
+      for(const f of m.mash)
+        extra.push(numField(`${nm} ${f.strength} window`, f.strength[0].toUpperCase()+' window', f.window, 1, 255,
+          v=>setMash(m.sub, f.strength, {window:v}, nm), `ticks allowed between ${f.strength} presses (originally ${f.orig_window})`));
+    } else {
+      tdi.colSpan=3; tdi.className='muted'; tdi.textContent='button move (not editable yet)';
+      tr.append(tdo,tdn,tdi);
+    }
+    if(extra.length){
+      tb.appendChild(tr);
+      const tr2=document.createElement('tr'), td=document.createElement('td');
+      td.colSpan=5; td.className='inpextra'; extra.forEach(x=>td.appendChild(x)); tr2.appendChild(td);
+      tb.appendChild(tr2); return;
+    }
+    tb.appendChild(tr);
+  });
+  const sh=inputsCur.checker_shared_with||[];
+  note.textContent = sh.length ? `This character shares its move checker with ${sh.join(', ')}: edits change both.` : '';
+  syncInputsEnabled();
+}
+// shortcut helpers: '236' <-> '2*36*'
+function hasShortcuts(mot){ return /[2468]/.test(mot||'') && ![...(mot||'')].some((c,i,a)=>'2468'.includes(c) && a[i+1]!=='*'); }
+function toggleShortcuts(mot, on){
+  const plain=(mot||'').replace(/\*/g,'');
+  return on ? plain.replace(/([2468])/g,'$1*') : plain;
+}
+function checkField(aria, label, checked, onset, title){
+  const w=document.createElement('label'); w.className='muted'; w.title=title;
+  const inp=document.createElement('input'); inp.type='checkbox'; inp.checked=!!checked;
+  inp.dataset.edit='1'; inp.setAttribute('aria-label', aria);
+  inp.addEventListener('change',()=>onset(inp.checked));
+  w.append(inp, ' '+label); return w;
+}
+// direction window (min-max ticks) and button window(s) for one move
+function timingFields(m, nm){
+  const t=m.timing||{}, out=[];
+  if(t.dir){
+    const d=t.dir, tip=(d.fixed_engine ? 'fixed window of the rewritten checker' : `random ${d.orig_min}-${d.orig_max} in the stock game`)
+      + (d.extra ? ` (+${d.extra} added by the game)` : '');
+    out.push(numField(`${nm} direction window minimum`, 'dir window', d.min, 1, 120,
+      v=>postInput('/api/inputs/timing', {sub:m.sub, dir_min:v, dir_max:Math.max(v, d.max)}, nm, 'direction window'),
+      'ticks allowed to reach each next direction: minimum · '+tip));
+    if(!d.fixed_engine)
+      out.push(numField(`${nm} direction window maximum`, '–', d.max, 1, 120,
+        v=>postInput('/api/inputs/timing', {sub:m.sub, dir_min:Math.min(v, d.min), dir_max:v}, nm, 'direction window'),
+        'ticks allowed to reach each next direction: maximum · '+tip));
+  }
+  if(t.btn){
+    const b=t.btn;
+    if('light' in b){
+      [['light','L'],['medium','M'],['heavy','H']].forEach(([k,lab],i)=>out.push(numField(`${nm} ${k} button window`,
+        (i===0?'button ':'')+lab, b[k], 1, 60, v=>postInput('/api/inputs/timing', {sub:m.sub, [k]:v}, nm, 'button window'),
+        `ticks to press ${k} after the last direction (stock ${b.orig[i]})`)));
+    } else {
+      out.push(numField(`${nm} button window`, 'button', b.all, 1, 60,
+        v=>postInput('/api/inputs/timing', {sub:m.sub, button:v}, nm, 'button window'),
+        `ticks to press after the last direction (stock ${b.orig[0]})`));
+    }
+  }
+  if(out.length){
+    const rs=document.createElement('button'); rs.textContent='reset timing'; rs.dataset.edit='1';
+    rs.setAttribute('aria-label',`reset ${nm} timing`);
+    rs.onclick=()=>postInput('/api/inputs/timing', {sub:m.sub, reset:true}, nm, 'timing reset');
+    out.push(rs);
+  }
+  return out;
+}
+// small labelled number field for the input card's second rows
+function numField(aria, label, value, lo, hi, onset, title){
+  const w=document.createElement('label'); w.className='muted'; w.title=title;
+  const inp=document.createElement('input'); inp.type='number'; inp.min=lo; inp.max=hi; inp.value=value;
+  inp.dataset.edit='1'; inp.setAttribute('aria-label', aria);
+  inp.addEventListener('change',()=>onset(+inp.value));
+  w.append(label+' ', inp); return w;
+}
+async function postInput(url, body, name, what){
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();
+  await loadInputs();
+  document.getElementById('inpMsg').textContent = r.ok ? `${name}: ${what} saved.` : 'Not saved: '+(j.error||'failed');
+  if(r.ok) setDirty(j.dirty_bytes);
+}
+function setCharge(sub, frames, name){ return postInput('/api/inputs/charge', {sub, frames}, name, `charge time ${frames} ticks`); }
+function setMash(sub, strength, vals, name){ return postInput('/api/inputs/mash', {sub, strength, ...vals}, name, 'mash timing'); }
+async function globalInputs(body, what){
+  const r=await fetch('/api/inputs/global',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();
+  document.getElementById('g_inpMsg').textContent = r.ok ? `${what}: ${j.changed} moves${j.skipped?` (${j.skipped} skipped)`:''}.` : 'Not saved: '+(j.error||'failed');
+  if(r.ok){ setDirty(j.dirty_bytes); if(typeof animChar!=='undefined' && animChar) loadInputs(); }
+}
+function syncInputsEnabled(){
+  document.querySelectorAll('[data-gedit]').forEach(el=>el.disabled=!editMode);
+  if(!editMode && document.getElementById('g_inpMsg')) document.getElementById('g_inpMsg').textContent='Turn on edit mode to change these.';
+  document.querySelectorAll('#inpTab [data-edit]').forEach(el=>el.disabled=!editMode);
+  document.querySelectorAll('#inpTab button[aria-label^="try"]').forEach(el=>el.disabled=!editMode || !!el.dataset.lock);
+  document.getElementById('inpOrderReset').disabled=!editMode || !inputsCur;
+  if(!editMode) document.getElementById('inpMsg').textContent='Turn on edit mode to change these.';
+}
+async function setInput(sub, motion, name){
+  const body = motion===null ? {sub, reset:true} : {sub, motion};
+  const r=await fetch('/api/inputs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();
+  await loadInputs();
+  document.getElementById('inpMsg').textContent = !r.ok ? 'Not saved: '+(j.error||'failed')
+    : motion===null ? `${name}: back to the game's input.` : `${name}: ${arrows(j.motion)} saved.`;
+  if(r.ok) setDirty(j.dirty_bytes);
+}
+async function moveInput(sub, move){
+  const r=await fetch('/api/inputs/priority',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({char:animChar, ver:animVer, sub, move})});
+  const j=await r.json();
+  await loadInputs();
+  document.getElementById('inpMsg').textContent = r.ok ? 'Order saved.' : 'Not saved: '+(j.error||'failed');
+  refreshDirty();
+}
+async function resetInputOrder(){
+  await fetch('/api/inputs/priority',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({char:animChar, ver:animVer, reset:true})});
+  await loadInputs(); document.getElementById('inpMsg').textContent='Order reset.'; refreshDirty();
+}
+function syncDamageEnabled(){
+  document.querySelectorAll('#dtFields input').forEach(i=>i.disabled=!editMode);
+  const s=document.getElementById('f_dmgclass'); if(s) s.disabled=!editMode || !dmgCur;
+}
+function curBox(){ const fr=animFrames[animPos]; return fr && selBox ? (fr.boxes||{})[selBox] : null; }
+function syncFields(){
+  syncDur(); syncDamage();
+  const b=curBox(), on=editMode && !!b;
+  const ids=['f_vx','f_vy','f_rx','f_ry'], keys=['val_x','val_y','rad_x','rad_y'];
+  ids.forEach((id,i)=>{ const el=document.getElementById(id); el.disabled=!on; el.value=on?b[keys[i]]:''; });
+  const info=document.getElementById('selInfo');
+  if(!editMode){ info.textContent='Turn on edit mode, then click a box.'; return; }
+  if(!b){ info.textContent='Click a box on the canvas, or a row in the table.'; return; }
+  const users=animFrames.filter(f=>Object.values(f.boxes||{}).some(x=>x&&x.addr===b.addr)).length;
+  info.innerHTML=`${CH_LABEL[selBox]} box at <code>${b.addr}</code> — used by ${users} of ${animFrames.length} frames in this animation.`;
+}
+// apply new geometry locally to every loaded frame sharing this box, then redraw
+function applyLocal(addr, g){
+  for(const f of animFrames) for(const x of Object.values(f.boxes||{})) if(x && x.addr===addr) Object.assign(x,g);
+}
+let commitTimer=null;
+function commitSoon(){ clearTimeout(commitTimer); commitTimer=setTimeout(commit,250); }
+async function commit(){
+  const b=curBox(); if(!b) return;
+  const r=await fetch('/api/box',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({addr:b.addr,val_x:b.val_x,val_y:b.val_y,rad_x:b.rad_x,rad_y:b.rad_y})});
+  const j=await r.json();
+  if(!r.ok){ alert(j.error||'save failed'); return; }
+  applyLocal(j.addr, j.box); setDirty(j.dirty_bytes); syncFields(); drawAnim();
+}
+['f_vx','f_vy','f_rx','f_ry'].forEach((id,i)=>{
+  document.getElementById(id).addEventListener('change',()=>{
+    const b=curBox(); if(!b) return;
+    const k=['val_x','val_y','rad_x','rad_y'][i], lim=i<2?[-128,127]:[0,255];
+    const g={}; g[k]=clamp(Math.round(+document.getElementById(id).value||0),lim[0],lim[1]);
+    applyLocal(b.addr,g); drawAnim(); commit();
+  });
+});
+function canvasPos(e){ const cv=document.getElementById('astage'), r=cv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*cv.width/r.width, y:(e.clientY-r.top)*cv.height/r.height}; }
+function hitTest(p){
+  const fr=animFrames[animPos]; if(!fr) return null;
+  const E=6;
+  for(const ch of [...ORDER].reverse()){                  // topmost first
+    const b=(fr.boxes||{})[ch]; if(!live(b)) continue;
+    const r=boxRect(b);
+    if(p.x<r.x-E||p.x>r.x+r.w+E||p.y<r.y-E||p.y>r.y+r.h+E) continue;
+    const nx=Math.abs(p.x-r.x)<=E||Math.abs(p.x-(r.x+r.w))<=E, ny=Math.abs(p.y-r.y)<=E||Math.abs(p.y-(r.y+r.h))<=E;
+    return {ch, mode: nx&&ny?'both': nx?'x': ny?'y':'move'};
+  }
+  return null;
+}
+const astage=document.getElementById('astage');
+astage.addEventListener('mousedown',e=>{
+  if(!editMode) return;
+  const p=canvasPos(e), h=hitTest(p);
+  if(!h){ selBox=null; syncFields(); drawAnim(); return; }
+  selBox=h.ch; const b=curBox();
+  drag={mode:h.mode, sx:p.x, sy:p.y, o:{...b}, moved:false};
+  syncFields(); drawAnim(); e.preventDefault();
+});
+astage.addEventListener('mousemove',e=>{
+  if(!editMode) return;
+  const p=canvasPos(e);
+  if(!drag){ const h=hitTest(p); astage.style.cursor=!h?'default':h.mode==='move'?'move':h.mode==='x'?'ew-resize':h.mode==='y'?'ns-resize':'nwse-resize'; return; }
+  const b=curBox(); if(!b) return;
+  const g={};
+  if(drag.mode==='move'){
+    g.val_x=clamp(drag.o.val_x+Math.round((p.x-drag.sx)/SCALE),-128,127);
+    g.val_y=clamp(drag.o.val_y-Math.round((p.y-drag.sy)/SCALE),-128,127);
+  }
+  if(drag.mode==='x'||drag.mode==='both') g.rad_x=clamp(Math.round(Math.abs(p.x-(CX+drag.o.val_x*SCALE))/SCALE),0,255);
+  if(drag.mode==='y'||drag.mode==='both') g.rad_y=clamp(Math.round(Math.abs(p.y-(animCY-drag.o.val_y*SCALE))/SCALE),0,255);
+  applyLocal(b.addr,g); drag.moved=true; syncFields(); drawAnim();
+});
+window.addEventListener('mouseup',()=>{ if(drag && drag.moved) commit(); drag=null; });
+astage.addEventListener('keydown',e=>{
+  if(!editMode) return;
+  const b=curBox(); if(!b) return;
+  const step=e.shiftKey?1:1, g={};
+  if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) return;
+  if(e.shiftKey){
+    if(e.key==='ArrowLeft') g.rad_x=clamp(b.rad_x-step,0,255); if(e.key==='ArrowRight') g.rad_x=clamp(b.rad_x+step,0,255);
+    if(e.key==='ArrowDown') g.rad_y=clamp(b.rad_y-step,0,255); if(e.key==='ArrowUp') g.rad_y=clamp(b.rad_y+step,0,255);
+  } else {
+    if(e.key==='ArrowLeft') g.val_x=clamp(b.val_x-step,-128,127); if(e.key==='ArrowRight') g.val_x=clamp(b.val_x+step,-128,127);
+    if(e.key==='ArrowDown') g.val_y=clamp(b.val_y-step,-128,127); if(e.key==='ArrowUp') g.val_y=clamp(b.val_y+step,-128,127);
+  }
+  applyLocal(b.addr,g); syncFields(); drawAnim(); commitSoon(); e.preventDefault();
+});
+astage.addEventListener('mousedown',()=>astage.focus());
+
+// ---------------- animation controls dock ----------------
+// Opens when the pointer comes within DOCK_ZONE px of the viewer's bottom edge,
+// stays open while the pointer is over it, and closes when the pointer moves
+// back up into the viewer (so boxes near the bottom stay editable). Clicking
+// the handle pins it open; keyboard focus inside it also keeps it open.
+const stageWrap=document.getElementById('stageWrap'), animDock=document.getElementById('animDock'),
+      dockHandle=document.getElementById('dockHandle');
+const DOCK_ZONE=48;
+let dockPinned=false;
+function setDock(open){
+  open = open || dockPinned;
+  animDock.classList.toggle('open', open);
+  animDock.classList.toggle('pinned', dockPinned);
+  dockHandle.setAttribute('aria-expanded', String(open));
+}
+function dockHasKeyFocus(){ return !!animDock.querySelector(':focus-visible'); }
+stageWrap.addEventListener('mousemove',e=>{
+  if(drag || e.buttons) return;                  // never pop up mid-drag
+  if(animDock.contains(e.target)){ setDock(true); return; }
+  const r=stageWrap.getBoundingClientRect();
+  if(e.clientY > r.bottom-DOCK_ZONE) setDock(true);
+  else if(!dockHasKeyFocus()) setDock(false);
+});
+// a native <select> list can draw outside the viewer: leaving onto it must not close the dock
+stageWrap.addEventListener('mouseleave',()=>{
+  const a=document.activeElement;
+  if(dockHasKeyFocus() || (a && a.tagName==='SELECT' && animDock.contains(a))) return;
+  setDock(false);
+});
+dockHandle.addEventListener('click',()=>{ dockPinned=!dockPinned; setDock(dockPinned); });
+animDock.addEventListener('focusin',()=>setDock(true));
+animDock.addEventListener('focusout',()=>setTimeout(()=>{
+  if(!animDock.contains(document.activeElement) && !animDock.matches(':hover')) setDock(false); },0));
+
+// ---------------- start ----------------
+(async()=>{ await initChars(); await refreshDirty(); showTab('anim'); await onAnimChar(); await loadDamageTable(); })();
+</script>
+</body>
+</html>

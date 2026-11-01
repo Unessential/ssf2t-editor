@@ -1,0 +1,15 @@
+# game files: never commit ROM data
+*.zip
+*.key
+*.bin
+*.orig
+sfx.*
+sfxe.*
+# local state
+__pycache__/
+*.pyc
+server.log
+*.log
+*.tmp
+*.bak*
+node_modules/

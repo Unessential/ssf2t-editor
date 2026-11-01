@@ -1,0 +1,1232 @@
+{
+ "chunli": {
+  "Kikoken": {
+   "Weak Punch": {
+    "anims": [
+     "0x0732AE",
+     "0x0732C6",
+     "0x0732DE",
+     "0x07330E",
+     "0x073326",
+     "0x07333E",
+     "0x07336E",
+     "0x073386",
+     "0x07339E",
+     "0x0733B6",
+     "0x0733E6",
+     "0x0733FE",
+     "0x073416",
+     "0x07342E",
+     "0x07345E",
+     "0x073476",
+     "0x07348E",
+     "0x0732F6",
+     "0x073356",
+     "0x0733CE",
+     "0x073446",
+     "0x0738A2",
+     "0x0738BA",
+     "0x0738D2",
+     "0x0738EA",
+     "0x07391A",
+     "0x073932",
+     "0x07394A"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731C6",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x0734AA",
+     "0x0734C2",
+     "0x0734DA",
+     "0x07350A",
+     "0x073522",
+     "0x07353A",
+     "0x073552",
+     "0x073582",
+     "0x07359A",
+     "0x0735B2",
+     "0x0735CA",
+     "0x0735E2",
+     "0x073612",
+     "0x07362A",
+     "0x073642",
+     "0x07365A",
+     "0x07368A",
+     "0x0734F2",
+     "0x07356A",
+     "0x0738A2",
+     "0x0738BA",
+     "0x0738D2",
+     "0x073902",
+     "0x07391A",
+     "0x073932"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731CA",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0736A6",
+     "0x0736BE",
+     "0x0736D6",
+     "0x0736EE",
+     "0x073706",
+     "0x07371E",
+     "0x073736",
+     "0x07374E",
+     "0x073766",
+     "0x07377E",
+     "0x073796",
+     "0x0737AE",
+     "0x0737DE",
+     "0x0737F6",
+     "0x07380E",
+     "0x073826",
+     "0x073856",
+     "0x07386E",
+     "0x073886",
+     "0x0738A2",
+     "0x0738D2",
+     "0x0738EA",
+     "0x073902",
+     "0x07391A",
+     "0x073932",
+     "0x07394A"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731CE",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "deejay": {
+  "Air Slasher": {
+   "Weak Punch": {
+    "anims": [
+     "0x073C8E",
+     "0x073CA6",
+     "0x073CBE",
+     "0x073CD6",
+     "0x073D06",
+     "0x073D1E",
+     "0x073D36",
+     "0x073D66",
+     "0x073CEE",
+     "0x073D4E"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C0C",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x073D82",
+     "0x073D9A",
+     "0x073DB2",
+     "0x073DCA",
+     "0x073DFA",
+     "0x073E12",
+     "0x073E2A",
+     "0x073E42",
+     "0x073DE2",
+     "0x073E5A"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C10",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x073E76",
+     "0x073E8E",
+     "0x073EA6",
+     "0x073EBE",
+     "0x073ED6",
+     "0x073EEE",
+     "0x073F06",
+     "0x073F1E",
+     "0x073F4E",
+     "0x073F36"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C14",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "dhalsim": {
+  "Yoga Fire": {
+   "Weak Punch": {
+    "anims": [
+     "0x06EF42",
+     "0x06EF5A",
+     "0x06EF72",
+     "0x06EF8A",
+     "0x06EFA2",
+     "0x06EFBA",
+     "0x06EFD2",
+     "0x06EFEA",
+     "0x06F002",
+     "0x06F01A",
+     "0x06F032",
+     "0x06F062",
+     "0x06F07A",
+     "0x06F092",
+     "0x06EF2A",
+     "0x06F04A"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEA8",
+    "speed_space": "op"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x06F0C6",
+     "0x06F0DE",
+     "0x06F0F6",
+     "0x06F10E",
+     "0x06F126",
+     "0x06F13E",
+     "0x06F156",
+     "0x06F16E",
+     "0x06F186",
+     "0x06F19E",
+     "0x06F1B6",
+     "0x06F1CE",
+     "0x06F1E6",
+     "0x06F1FE",
+     "0x06F216",
+     "0x06F0AE"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEAC",
+    "speed_space": "op"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x06F24A",
+     "0x06F262",
+     "0x06F27A",
+     "0x06F292",
+     "0x06F2AA",
+     "0x06F2C2",
+     "0x06F2DA",
+     "0x06F2F2",
+     "0x06F30A",
+     "0x06F322",
+     "0x06F33A",
+     "0x06F36A",
+     "0x06F382",
+     "0x06F39A",
+     "0x06F232"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEB0",
+    "speed_space": "op"
+   }
+  }
+ },
+ "guile": {
+  "Sonic Boom": {
+   "Weak Punch": {
+    "anims": [
+     "0x071044",
+     "0x07105C",
+     "0x071074",
+     "0x0710A4",
+     "0x0710BC",
+     "0x0710D4",
+     "0x0710EC"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FC2",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x071108",
+     "0x071120",
+     "0x071138",
+     "0x071168",
+     "0x071180",
+     "0x071198",
+     "0x0711B0"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FC6",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0711CC",
+     "0x0711E4",
+     "0x0711FC",
+     "0x07122C",
+     "0x071244",
+     "0x07125C",
+     "0x071274"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FCA",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "ken": {
+  "Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x06EBD2",
+     "0x06EBEA",
+     "0x06EC02",
+     "0x06EC1A",
+     "0x06EC32"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB50",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x06EC4E",
+     "0x06EC66",
+     "0x06EC7E",
+     "0x06EC96",
+     "0x06ECAE"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB54",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x06ECCA",
+     "0x06ECE2",
+     "0x06ECFA",
+     "0x06ED12",
+     "0x06ED2A"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB58",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "ryu": {
+  "Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x072246",
+     "0x07225E",
+     "0x072276",
+     "0x07228E",
+     "0x0722A6",
+     "0x0722BE",
+     "0x0722D6",
+     "0x0722EE",
+     "0x072306",
+     "0x07231E",
+     "0x072336",
+     "0x07234E",
+     "0x072366",
+     "0x07237E",
+     "0x072396"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x07206E",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x0723B2",
+     "0x0723CA",
+     "0x0723E2",
+     "0x0723FA",
+     "0x072412",
+     "0x07242A",
+     "0x072442",
+     "0x07245A",
+     "0x072472",
+     "0x07248A",
+     "0x0724A2",
+     "0x0724BA",
+     "0x0724D2",
+     "0x0724EA",
+     "0x072502"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072072",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x07251E",
+     "0x072536",
+     "0x07254E",
+     "0x072566",
+     "0x07257E",
+     "0x072596",
+     "0x0725AE",
+     "0x0725C6",
+     "0x0725DE",
+     "0x0725F6",
+     "0x07248A",
+     "0x0724A2",
+     "0x0724BA",
+     "0x0724D2",
+     "0x0724EA"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072076",
+    "speed_space": "raw"
+   }
+  },
+  "Shakunetsu Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x0728B6",
+     "0x0728CE",
+     "0x0728E6",
+     "0x0728FE",
+     "0x072916",
+     "0x07292E",
+     "0x072946",
+     "0x07295E",
+     "0x072976",
+     "0x07298E",
+     "0x0729A6",
+     "0x0729BE",
+     "0x0729D6",
+     "0x0729EE",
+     "0x072A06"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x07206E",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x072A22",
+     "0x072A3A",
+     "0x072A52",
+     "0x072A6A",
+     "0x072A82",
+     "0x072A9A",
+     "0x072AB2",
+     "0x072ACA",
+     "0x072AE2",
+     "0x072AFA",
+     "0x072B12",
+     "0x072B2A",
+     "0x072B42",
+     "0x072B5A",
+     "0x072B72"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072072",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x072B8E",
+     "0x072BA6",
+     "0x072BBE",
+     "0x072BD6",
+     "0x072BEE",
+     "0x072C06",
+     "0x072C1E",
+     "0x072C36",
+     "0x072C4E",
+     "0x072C66",
+     "0x072AFA",
+     "0x072B12",
+     "0x072B2A",
+     "0x072B42",
+     "0x072B5A",
+     "0x072B72"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072076",
+    "speed_space": "raw"
+   }
+  },
+  "Shinku Hadouken (super)": {
+   "Strong Punch": {
+    "anims": [
+     "0x07434E",
+     "0x074366",
+     "0x07437E",
+     "0x074396",
+     "0x0743AE",
+     "0x0743C6",
+     "0x0743DE",
+     "0x0743F6",
+     "0x07440E",
+     "0x074426",
+     "0x07443E",
+     "0x074456",
+     "0x07446E",
+     "0x074486",
+     "0x07449E"
+    ],
+    "hitbox_block": "0x0744BA",
+    "speed_slot": "0x07425C",
+    "speed_space": "op"
+   }
+  }
+ },
+ "sagat": {
+  "Tiger Shot": {
+   "Weak Punch": {
+    "anims": [
+     "0x0714F0",
+     "0x071508",
+     "0x071520",
+     "0x071538",
+     "0x071550",
+     "0x071568",
+     "0x071580",
+     "0x0715B0",
+     "0x0715C8",
+     "0x0715E0",
+     "0x0715F8",
+     "0x071610",
+     "0x071628",
+     "0x071640",
+     "0x071658",
+     "0x071598"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071440",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x071674",
+     "0x07168C",
+     "0x0716A4",
+     "0x0716BC",
+     "0x0716D4",
+     "0x0716EC",
+     "0x071704",
+     "0x07171C",
+     "0x071734",
+     "0x071764",
+     "0x07177C",
+     "0x071794",
+     "0x0717C4",
+     "0x0717DC",
+     "0x07174C"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071444",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0717F8",
+     "0x071810",
+     "0x071828",
+     "0x071858",
+     "0x071870",
+     "0x071888",
+     "0x0718B8",
+     "0x0718D0",
+     "0x0718E8",
+     "0x071900",
+     "0x071918",
+     "0x071930",
+     "0x071948",
+     "0x071840"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071448",
+    "speed_space": "raw"
+   }
+  },
+  "Ground Tiger Shot": {
+   "Weak Kick": {
+    "anims": [
+     "0x07197C",
+     "0x071994",
+     "0x0719AC",
+     "0x0719C4",
+     "0x0719F4",
+     "0x071A0C",
+     "0x071A24",
+     "0x071A3C",
+     "0x071A54",
+     "0x071A84",
+     "0x071A9C",
+     "0x071ACC",
+     "0x071AE4",
+     "0x0719DC",
+     "0x071A6C",
+     "0x071AB4"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071440",
+    "speed_space": "raw"
+   },
+   "Medium Kick": {
+    "anims": [
+     "0x071B00",
+     "0x071B18",
+     "0x071B30",
+     "0x071B48",
+     "0x071B60",
+     "0x071B78",
+     "0x071B90",
+     "0x071BA8",
+     "0x071BC0",
+     "0x071BF0",
+     "0x071C08",
+     "0x071C20",
+     "0x071C50",
+     "0x071C68",
+     "0x071BD8"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071444",
+    "speed_space": "raw"
+   },
+   "Strong Kick": {
+    "anims": [
+     "0x071C84",
+     "0x071CB4",
+     "0x071CCC",
+     "0x071CE4",
+     "0x071CFC",
+     "0x071D14",
+     "0x071D2C",
+     "0x071D44",
+     "0x071D5C",
+     "0x071D74",
+     "0x071D8C",
+     "0x071DBC",
+     "0x071DD4",
+     "0x071DEC"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071448",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "chunli_old": {
+  "Kikoken": {
+   "Weak Punch": {
+    "anims": [
+     "0x0732AE",
+     "0x0732C6",
+     "0x0732DE",
+     "0x0732F6",
+     "0x07330E",
+     "0x073326",
+     "0x07333E",
+     "0x073356",
+     "0x07336E",
+     "0x073386",
+     "0x07339E",
+     "0x0733B6",
+     "0x0733CE",
+     "0x0733E6",
+     "0x0733FE",
+     "0x073416",
+     "0x07342E",
+     "0x073446",
+     "0x07345E",
+     "0x073476",
+     "0x07348E",
+     "0x0738A2",
+     "0x0738BA",
+     "0x0738D2",
+     "0x0738EA",
+     "0x073902",
+     "0x07391A",
+     "0x073932",
+     "0x07394A"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731C6",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x0734AA",
+     "0x0734C2",
+     "0x0734DA",
+     "0x0734F2",
+     "0x07350A",
+     "0x073522",
+     "0x07353A",
+     "0x073552",
+     "0x07356A",
+     "0x073582",
+     "0x07359A",
+     "0x0735B2",
+     "0x0735CA",
+     "0x0735E2",
+     "0x0735FA",
+     "0x073612",
+     "0x07362A",
+     "0x073642",
+     "0x07365A",
+     "0x073672",
+     "0x07368A",
+     "0x0738A2",
+     "0x0738BA",
+     "0x0738D2",
+     "0x0738EA",
+     "0x073902",
+     "0x07391A",
+     "0x073932",
+     "0x07394A"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731CA",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0736A6",
+     "0x0736BE",
+     "0x0736D6",
+     "0x0736EE",
+     "0x073706",
+     "0x07371E",
+     "0x073736",
+     "0x07374E",
+     "0x073766",
+     "0x07377E",
+     "0x073796",
+     "0x0737AE",
+     "0x0737C6",
+     "0x0737DE",
+     "0x0737F6",
+     "0x07380E",
+     "0x073826",
+     "0x07383E",
+     "0x073856",
+     "0x07386E",
+     "0x073886",
+     "0x0738A2",
+     "0x0738BA",
+     "0x0738D2",
+     "0x0738EA",
+     "0x073902",
+     "0x07391A",
+     "0x073932",
+     "0x07394A"
+    ],
+    "hitbox_block": "0x073AC2",
+    "speed_slot": "0x0731CE",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "deejay_old": {
+  "Air Slasher": {
+   "Weak Punch": {
+    "anims": [
+     "0x073C8E",
+     "0x073CA6",
+     "0x073CBE",
+     "0x073CD6",
+     "0x073CEE",
+     "0x073D06",
+     "0x073D1E",
+     "0x073D36",
+     "0x073D4E",
+     "0x073D66"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C0C",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x073D82",
+     "0x073D9A",
+     "0x073DB2",
+     "0x073DCA",
+     "0x073DE2",
+     "0x073DFA",
+     "0x073E12",
+     "0x073E2A",
+     "0x073E42",
+     "0x073E5A"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C10",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x073E76",
+     "0x073E8E",
+     "0x073EA6",
+     "0x073EBE",
+     "0x073ED6",
+     "0x073EEE",
+     "0x073F06",
+     "0x073F1E",
+     "0x073F36",
+     "0x073F4E"
+    ],
+    "hitbox_block": "0x07411A",
+    "speed_slot": "0x073C14",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "dhalsim_old": {
+  "Yoga Fire": {
+   "Weak Punch": {
+    "anims": [
+     "0x06EF2A",
+     "0x06EF42",
+     "0x06EF5A",
+     "0x06EF72",
+     "0x06EF8A",
+     "0x06EFA2",
+     "0x06EFBA",
+     "0x06EFD2",
+     "0x06EFEA",
+     "0x06F002",
+     "0x06F01A",
+     "0x06F032",
+     "0x06F04A",
+     "0x06F062",
+     "0x06F07A",
+     "0x06F092"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEA8",
+    "speed_space": "op"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x06F0AE",
+     "0x06F0C6",
+     "0x06F0DE",
+     "0x06F0F6",
+     "0x06F10E",
+     "0x06F126",
+     "0x06F13E",
+     "0x06F156",
+     "0x06F16E",
+     "0x06F186",
+     "0x06F19E",
+     "0x06F1B6",
+     "0x06F1CE",
+     "0x06F1E6",
+     "0x06F1FE",
+     "0x06F216"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEAC",
+    "speed_space": "op"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x06F232",
+     "0x06F24A",
+     "0x06F262",
+     "0x06F27A",
+     "0x06F292",
+     "0x06F2AA",
+     "0x06F2C2",
+     "0x06F2DA",
+     "0x06F2F2",
+     "0x06F30A",
+     "0x06F322",
+     "0x06F33A",
+     "0x06F352",
+     "0x06F36A",
+     "0x06F382",
+     "0x06F39A"
+    ],
+    "hitbox_block": "0x06F3B6",
+    "speed_slot": "0x06EEB0",
+    "speed_space": "op"
+   }
+  }
+ },
+ "guile_old": {
+  "Sonic Boom": {
+   "Weak Punch": {
+    "anims": [
+     "0x071044",
+     "0x07105C",
+     "0x071074",
+     "0x07108C",
+     "0x0710A4",
+     "0x0710BC",
+     "0x0710D4",
+     "0x0710EC"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FC2",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x071108",
+     "0x071120",
+     "0x071138",
+     "0x071150",
+     "0x071168",
+     "0x071180",
+     "0x071198",
+     "0x0711B0"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FC6",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0711CC",
+     "0x0711E4",
+     "0x0711FC",
+     "0x071214",
+     "0x07122C",
+     "0x071244",
+     "0x07125C",
+     "0x071274"
+    ],
+    "hitbox_block": "0x0712E8",
+    "speed_slot": "0x070FCA",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "ken_old": {
+  "Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x06EBD2",
+     "0x06EBEA",
+     "0x06EC02",
+     "0x06EC1A",
+     "0x06EC32"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB50",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x06EC4E",
+     "0x06EC66",
+     "0x06EC7E",
+     "0x06EC96",
+     "0x06ECAE"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB54",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x06ECCA",
+     "0x06ECE2",
+     "0x06ECFA",
+     "0x06ED12",
+     "0x06ED2A"
+    ],
+    "hitbox_block": "0x06ED46",
+    "speed_slot": "0x06EB58",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "ryu_old": {
+  "Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x072246",
+     "0x07225E",
+     "0x072276",
+     "0x07228E",
+     "0x0722A6",
+     "0x0722BE",
+     "0x0722D6",
+     "0x0722EE",
+     "0x072306",
+     "0x07231E",
+     "0x072336",
+     "0x07234E",
+     "0x072366",
+     "0x07237E",
+     "0x072396"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x07206E",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x0723B2",
+     "0x0723CA",
+     "0x0723E2",
+     "0x0723FA",
+     "0x072412",
+     "0x07242A",
+     "0x072442",
+     "0x07245A",
+     "0x072472",
+     "0x07248A",
+     "0x0724A2",
+     "0x0724BA",
+     "0x0724D2",
+     "0x0724EA",
+     "0x072502"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072072",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x07251E",
+     "0x072536",
+     "0x07254E",
+     "0x072566",
+     "0x07257E",
+     "0x072596",
+     "0x0725AE",
+     "0x0725C6",
+     "0x0725DE",
+     "0x0725F6",
+     "0x07248A",
+     "0x0724A2",
+     "0x0724BA",
+     "0x0724D2",
+     "0x0724EA"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072076",
+    "speed_space": "raw"
+   }
+  },
+  "Shakunetsu Hadouken": {
+   "Weak Punch": {
+    "anims": [
+     "0x0728B6",
+     "0x0728CE",
+     "0x0728E6",
+     "0x0728FE",
+     "0x072916",
+     "0x07292E",
+     "0x072946",
+     "0x07295E",
+     "0x072976",
+     "0x07298E",
+     "0x0729A6",
+     "0x0729BE",
+     "0x0729D6",
+     "0x0729EE",
+     "0x072A06"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x07206E",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x072A22",
+     "0x072A3A",
+     "0x072A52",
+     "0x072A6A",
+     "0x072A82",
+     "0x072A9A",
+     "0x072AB2",
+     "0x072ACA",
+     "0x072AE2",
+     "0x072AFA",
+     "0x072B12",
+     "0x072B2A",
+     "0x072B42",
+     "0x072B5A",
+     "0x072B72"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072072",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x072B8E",
+     "0x072BA6",
+     "0x072BBE",
+     "0x072BD6",
+     "0x072BEE",
+     "0x072C06",
+     "0x072C1E",
+     "0x072C36",
+     "0x072C4E",
+     "0x072C66",
+     "0x072AFA",
+     "0x072B12",
+     "0x072B2A",
+     "0x072B42",
+     "0x072B5A",
+     "0x072B72"
+    ],
+    "hitbox_block": "0x072CFA",
+    "speed_slot": "0x072076",
+    "speed_space": "raw"
+   }
+  }
+ },
+ "sagat_old": {
+  "Tiger Shot": {
+   "Weak Punch": {
+    "anims": [
+     "0x0714F0",
+     "0x071508",
+     "0x071520",
+     "0x071538",
+     "0x071550",
+     "0x071568",
+     "0x071580",
+     "0x071598",
+     "0x0715B0",
+     "0x0715C8",
+     "0x0715E0",
+     "0x0715F8",
+     "0x071610",
+     "0x071628",
+     "0x071640",
+     "0x071658"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071440",
+    "speed_space": "raw"
+   },
+   "Medium Punch": {
+    "anims": [
+     "0x071674",
+     "0x07168C",
+     "0x0716A4",
+     "0x0716BC",
+     "0x0716D4",
+     "0x0716EC",
+     "0x071704",
+     "0x07171C",
+     "0x071734",
+     "0x07174C",
+     "0x071764",
+     "0x07177C",
+     "0x071794",
+     "0x0717AC",
+     "0x0717C4",
+     "0x0717DC"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071444",
+    "speed_space": "raw"
+   },
+   "Strong Punch": {
+    "anims": [
+     "0x0717F8",
+     "0x071810",
+     "0x071828",
+     "0x071840",
+     "0x071858",
+     "0x071870",
+     "0x071888",
+     "0x0718A0",
+     "0x0718B8",
+     "0x0718D0",
+     "0x0718E8",
+     "0x071900",
+     "0x071918",
+     "0x071930",
+     "0x071948",
+     "0x071960"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071448",
+    "speed_space": "raw"
+   }
+  },
+  "Ground Tiger Shot": {
+   "Weak Kick": {
+    "anims": [
+     "0x07197C",
+     "0x071994",
+     "0x0719AC",
+     "0x0719C4",
+     "0x0719DC",
+     "0x0719F4",
+     "0x071A0C",
+     "0x071A24",
+     "0x071A3C",
+     "0x071A54",
+     "0x071A6C",
+     "0x071A84",
+     "0x071A9C",
+     "0x071AB4",
+     "0x071ACC",
+     "0x071AE4"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071440",
+    "speed_space": "raw"
+   },
+   "Medium Kick": {
+    "anims": [
+     "0x071B00",
+     "0x071B18",
+     "0x071B30",
+     "0x071B48",
+     "0x071B60",
+     "0x071B78",
+     "0x071B90",
+     "0x071BA8",
+     "0x071BC0",
+     "0x071BD8",
+     "0x071BF0",
+     "0x071C08",
+     "0x071C20",
+     "0x071C38",
+     "0x071C50",
+     "0x071C68"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071444",
+    "speed_space": "raw"
+   },
+   "Strong Kick": {
+    "anims": [
+     "0x071C84",
+     "0x071C9C",
+     "0x071CB4",
+     "0x071CCC",
+     "0x071CE4",
+     "0x071CFC",
+     "0x071D14",
+     "0x071D2C",
+     "0x071D44",
+     "0x071D5C",
+     "0x071D74",
+     "0x071D8C",
+     "0x071DA4",
+     "0x071DBC",
+     "0x071DD4",
+     "0x071DEC"
+    ],
+    "hitbox_block": "0x071E96",
+    "speed_slot": "0x071448",
+    "speed_space": "raw"
+   }
+  }
+ }
+}
