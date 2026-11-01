@@ -8,9 +8,10 @@ This is my first ever public release on GitHub! I tried to abide by all the lice
 
 # SSF2T Editor 0.8.0.0
 
-A rebalance editor for **Super Street Fighter II Turbo** (CPS-2, MAME set `ssf2t`,
-World 940223). It runs in your browser, reads your own ROM set, and turns your
-edits into IPS / BPS patches or patches the ROM zip directly.
+A ROM editor for **Super Street Fighter II Turbo** (CPS-2, MAME set `ssf2t`,
+World 940223): hitboxes, frame data, damage and special-move inputs. It runs in
+your browser, reads your own ROM set, and turns your edits into IPS / BPS patches
+or patches the ROM zip directly.
 
 No game data is included. Everything is read from a ROM set you supply.
 
