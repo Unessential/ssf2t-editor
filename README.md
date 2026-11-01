@@ -58,7 +58,7 @@ next to `ssf2t.zip`).
    ```
    your_rom_folder/
      ssf2t.zip
-     ssf2t_editor/      <- this folder
+     ssf2t-editor/      <- this folder
    ```
 
    (Or keep them apart and set `SSF2T_ROM_DIR=/path/to/your_rom_folder`.)
@@ -66,7 +66,7 @@ next to `ssf2t.zip`).
 2. Install the Python packages:
 
    ```
-   cd ssf2t_editor
+   cd ssf2t-editor
    python3 -m pip install -r requirements.txt
    ```
 
